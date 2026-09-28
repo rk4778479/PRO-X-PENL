@@ -8,81 +8,136 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0a0a10;--bg-2:#0e0e16;--panel:#121219;--panel-2:#191924;--border:#26262f;--border-soft:#1c1c26;--text:#eeeef2;--text-dim:#87879a;--accent:#7c5cff;--accent-2:#9d84ff;--cyan:#3fd6c8;--green:#3ecf8e;--red:#f0555f;--amber:#f0a94e;--font:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-display:'Space Grotesk',var(--font);--font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;}
+  :root{
+    --bg:#08010f;--bg-2:#0d0218;
+    --panel:rgba(15,8,28,.72);--panel-2:rgba(30,15,50,.78);
+    --border:rgba(180,120,255,.28);--border-soft:rgba(180,120,255,.15);
+    --text:#f5f0ff;--text-dim:#b0a5c9;
+    --accent:#b14aff;--accent-2:#d96bff;--cyan:#22e6ff;--pink:#ff4db8;
+    --green:#3ee69a;--red:#ff4d6b;--amber:#ffb84d;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-display:'Space Grotesk',var(--font);
+    --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;
+  }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:radial-gradient(1100px 500px at 14% -8%,rgba(124,92,255,.14),transparent 60%),radial-gradient(900px 500px at 100% 0%,rgba(63,214,200,.08),transparent 55%),var(--bg);color:var(--text);font-family:var(--font);font-size:14px;display:flex;min-height:100vh;}
-  .sidebar{width:236px;background:var(--panel);border-right:1px solid var(--border-soft);display:flex;flex-direction:column;padding:22px 14px;flex-shrink:0;transition:width .2s ease;}
-  .sidebar.collapsed{width:64px;}.sidebar.collapsed .nav-label,.sidebar.collapsed .brand-text,.sidebar.collapsed .status-label{display:none;}
+  html,body{height:100%;}
+  body{color:var(--text);font-family:var(--font);font-size:14px;display:flex;min-height:100vh;position:relative;overflow-x:hidden;background:#08010f;}
+
+  .live-wallpaper{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+  .live-wallpaper::before{content:"";position:absolute;inset:-8%;background-image:url('https://cdn.pixabay.com/photo/2023/11/18/19/06/futuristic-home-8397004_1280.jpg');background-size:cover;background-position:center;animation:kbZoom 40s ease-in-out infinite alternate;filter:brightness(.65) saturate(1.18) contrast(1.05);will-change:transform;}
+  @keyframes kbZoom{0%{transform:scale(1) translate(0,0);}50%{transform:scale(1.12) translate(-1%,-1%);}100%{transform:scale(1.05) translate(1%,1%);}}
+  .live-wallpaper::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%, rgba(177,74,255,.28), transparent 55%),radial-gradient(circle at 85% 80%, rgba(34,230,255,.20), transparent 55%),linear-gradient(180deg, rgba(8,1,15,.45) 0%, rgba(8,1,15,.72) 100%);pointer-events:none;}
+  .live-aurora{position:fixed;inset:-40%;z-index:0;pointer-events:none;background:radial-gradient(circle at 25% 30%, rgba(177,74,255,.30), transparent 45%),radial-gradient(circle at 75% 25%, rgba(255,77,184,.24), transparent 45%),radial-gradient(circle at 60% 80%, rgba(34,230,255,.20), transparent 50%);filter:blur(70px);animation:auroraFloat 25s ease-in-out infinite;mix-blend-mode:screen;}
+  @keyframes auroraFloat{0%{transform:translate(0,0) rotate(0deg);}33%{transform:translate(4%,-3%) rotate(6deg);}66%{transform:translate(-3%,3%) rotate(-5deg);}100%{transform:translate(0,0) rotate(0deg);}}
+  .live-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(180,120,255,.09) 1px, transparent 1px),linear-gradient(90deg, rgba(180,120,255,.09) 1px, transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse at center, black 30%, transparent 85%);-webkit-mask-image:radial-gradient(ellipse at center, black 30%, transparent 85%);animation:gridDrift 60s linear infinite;}
+  @keyframes gridDrift{from{background-position:0 0, 0 0;}to{background-position:52px 52px, 52px 52px;}}
+  .live-particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .live-particles span{position:absolute;width:3px;height:3px;border-radius:50%;background:#d96bff;box-shadow:0 0 10px #b14aff, 0 0 22px #d96bff;animation:floatUp linear infinite;opacity:0;}
+  .live-particles span:nth-child(1){left:6%;bottom:-10%;animation-duration:20s;background:#22e6ff;}
+  .live-particles span:nth-child(2){left:18%;bottom:-10%;animation-duration:26s;animation-delay:3s;}
+  .live-particles span:nth-child(3){left:32%;bottom:-10%;animation-duration:22s;animation-delay:6s;background:#ff4db8;}
+  .live-particles span:nth-child(4){left:48%;bottom:-10%;animation-duration:28s;animation-delay:2s;background:#22e6ff;}
+  .live-particles span:nth-child(5){left:62%;bottom:-10%;animation-duration:24s;animation-delay:5s;}
+  .live-particles span:nth-child(6){left:76%;bottom:-10%;animation-duration:30s;animation-delay:7s;background:#ff4db8;}
+  @keyframes floatUp{0%{transform:translateY(0);opacity:0;}10%{opacity:.85;}90%{opacity:.85;}100%{transform:translateY(-110vh) translateX(40px);opacity:0;}}
+
+  /* LOCK SCREEN */
+  .prox-lock-screen{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
+  .prox-lock-screen.show{display:flex;}
+  .prox-lock-box{background:rgba(20,10,35,.72);backdrop-filter:blur(30px) saturate(150%);-webkit-backdrop-filter:blur(30px) saturate(150%);border:1px solid rgba(180,120,255,.32);border-radius:20px;padding:40px 36px;width:100%;max-width:400px;text-align:center;box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 60px rgba(177,74,255,.30);animation:lockFadeIn .5s ease;}
+  @keyframes lockFadeIn{from{opacity:0;transform:translateY(20px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .prox-lock-logo{font-family:var(--font-display);font-weight:700;font-size:32px;letter-spacing:.02em;margin-bottom:8px;}
+  .prox-lock-logo span{background:linear-gradient(135deg,#22e6ff 0%,#d96bff 50%,#ff4db8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px rgba(217,107,255,.6));}
+  .prox-lock-sub{font-size:12.5px;color:var(--text-dim);margin-bottom:28px;letter-spacing:.04em;}
+  .prox-lock-icon{width:56px;height:56px;margin:0 auto 20px;border-radius:16px;background:linear-gradient(135deg,rgba(177,74,255,.30),rgba(217,107,255,.20));border:1px solid rgba(180,120,255,.35);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 30px rgba(177,74,255,.40);}
+  .prox-lock-input{width:100%;background:rgba(10,3,20,.80);border:1px solid rgba(180,120,255,.32);color:var(--text);padding:14px 16px;border-radius:12px;font-size:14px;outline:none;font-family:var(--font-mono);letter-spacing:3px;text-align:center;transition:all .2s;}
+  .prox-lock-input:focus{border-color:var(--accent-2);box-shadow:0 0 0 4px rgba(217,107,255,.20),0 0 30px rgba(217,107,255,.25);}
+  .prox-lock-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:none;color:#fff;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.04em;box-shadow:0 8px 30px -6px rgba(177,74,255,.85),inset 0 0 24px rgba(255,255,255,.10);transition:all .2s;font-family:var(--font);}
+  .prox-lock-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+  .prox-lock-msg{font-size:12px;margin-top:14px;min-height:18px;color:var(--red);}
+  @keyframes shakeX{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+  .prox-lock-box.shake{animation:shakeX .35s ease;}
+
+  .prox-app-wrap{display:flex;width:100%;min-height:100vh;position:relative;z-index:2;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s;}
+  body.prox-unlocked .prox-app-wrap{opacity:1;visibility:visible;}
+
+  .sidebar{width:236px;background:rgba(12,5,25,.55);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border-right:1px solid rgba(180,120,255,.20);display:flex;flex-direction:column;padding:22px 14px;flex-shrink:0;transition:width .2s;position:relative;z-index:5;}
+  .sidebar.collapsed{width:64px;}
+  .sidebar.collapsed .nav-label,.sidebar.collapsed .brand-text,.sidebar.collapsed .status-label{display:none;}
   .brand{display:flex;align-items:center;justify-content:space-between;padding:0 6px 26px 6px;}
-  .brand-text{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.01em;}
-  .brand-text span{background:linear-gradient(135deg,var(--accent-2),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .brand-text{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:.02em;}
+  .brand-text span{background:linear-gradient(135deg,#22e6ff 0%,#d96bff 50%,#ff4db8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 12px rgba(217,107,255,.55));}
   .collapse-btn{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;padding:4px;border-radius:6px;}
-  .collapse-btn:hover{background:var(--panel-2);color:var(--text);}
-  nav{display:flex;flex-direction:column;gap:3px;flex:1;}
-  .nav-item{display:flex;align-items:center;gap:12px;padding:9px 11px;border-radius:9px;color:var(--text-dim);text-decoration:none;cursor:pointer;font-size:13.5px;font-weight:500;border:1px solid transparent;transition:background .15s ease,color .15s ease;}
+  .collapse-btn:hover{background:rgba(180,120,255,.15);color:#fff;}
+  nav{display:flex;flex-direction:column;gap:4px;flex:1;}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--text-dim);text-decoration:none;cursor:pointer;font-size:13.5px;font-weight:500;border:1px solid transparent;transition:all .2s;position:relative;overflow:hidden;}
   .nav-item .icon{width:16px;text-align:center;font-size:14px;}
-  .nav-item:hover{background:var(--panel-2);color:var(--text);}
-  .nav-item.active{background:linear-gradient(135deg,var(--accent),#6845e6);color:#fff;box-shadow:0 4px 14px -4px rgba(124,92,255,.55);}
+  .nav-item:hover{background:rgba(180,120,255,.12);color:#fff;border-color:rgba(180,120,255,.28);transform:translateX(2px);}
+  .nav-item.active{background:linear-gradient(135deg,rgba(177,74,255,.88),rgba(217,107,255,.88));color:#fff;border-color:rgba(255,255,255,.18);box-shadow:0 6px 22px -4px rgba(177,74,255,.75);}
+  .nav-item.active::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#22e6ff,#ff4db8);border-radius:3px;}
   .status-box{border-top:1px solid var(--border-soft);padding-top:16px;margin-top:12px;}
   .status-label{font-size:10px;color:var(--text-dim);letter-spacing:.1em;margin-bottom:5px;font-weight:600;}
   .status-value{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--green);}
-  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
-  .status-dot.loading{background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse-dot 1s ease-in-out infinite;}
-  @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.35;}}
-  .main{flex:1;display:flex;flex-direction:column;min-width:0;}
-  .topbar{display:flex;align-items:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--border-soft);background:var(--panel);flex-wrap:wrap;}
-  .search-wrap{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:8px 12px;min-width:220px;transition:border-color .15s ease,box-shadow .15s ease;}
-  .search-wrap:focus-within{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(124,92,255,.15);}
-  .search-wrap input{background:none;border:none;color:var(--text);outline:none;font-size:13px;width:100%;letter-spacing:2px;font-family:var(--font-mono);}
-  .search-wrap .icon{color:var(--text-dim);font-size:13px;}
-  .date-field{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:7px 10px;font-size:12px;color:var(--text-dim);font-weight:600;letter-spacing:.03em;cursor:pointer;position:relative;transition:border-color .15s ease;}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;z-index:3;}
+  .topbar{display:flex;align-items:center;gap:10px;padding:14px 24px;border-bottom:1px solid rgba(180,120,255,.18);background:rgba(12,5,25,.55);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);flex-wrap:wrap;position:sticky;top:0;z-index:20;}
+  .date-field{display:flex;align-items:center;gap:6px;background:rgba(10,3,20,.70);border:1px solid rgba(180,120,255,.28);border-radius:10px;padding:7px 10px;font-size:12px;color:var(--text-dim);font-weight:600;letter-spacing:.03em;cursor:pointer;position:relative;transition:all .2s;}
   .date-field:hover,.date-field.open{border-color:var(--accent-2);}
   .date-field input{background:none;border:none;color:var(--text);outline:none;font-size:12.5px;font-family:var(--font);font-weight:500;cursor:pointer;width:92px;}
   .field-arrows{display:flex;flex-direction:column;gap:1px;font-size:6px;line-height:1;color:var(--text-dim);margin-left:2px;}
-  .date-field:hover .field-arrows,.date-field.open .field-arrows{color:var(--accent-2);}
-  .calendar-popup{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:50;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;width:280px;box-shadow:0 20px 40px -12px rgba(0,0,0,.6);cursor:default;}
+  .calendar-popup{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:50;background:rgba(20,10,35,.95);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);border:1px solid rgba(180,120,255,.30);border-radius:14px;padding:16px;width:280px;box-shadow:0 25px 60px -12px rgba(0,0,0,.85);cursor:default;}
   .calendar-popup.show{display:block;}
   .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
   .cal-title{font-family:var(--font-display);font-weight:600;font-size:13.5px;color:var(--text);}
   .cal-nav{display:flex;gap:4px;}
-  .cal-nav button{background:var(--panel-2);border:1px solid var(--border);color:var(--text-dim);width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:12px;}
-  .cal-nav button:hover{color:var(--text);border-color:var(--accent-2);}
+  .cal-nav button{background:rgba(180,120,255,.16);border:1px solid rgba(180,120,255,.28);color:var(--text-dim);width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:12px;}
+  .cal-nav button:hover{color:#fff;border-color:var(--accent-2);}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
-  .cal-dow{text-align:center;font-size:10.5px;color:var(--text-dim);font-weight:700;padding:4px 0 8px;letter-spacing:.03em;}
+  .cal-dow{text-align:center;font-size:10.5px;color:var(--text-dim);font-weight:700;padding:4px 0 8px;}
   .cal-day{text-align:center;font-size:12.5px;color:var(--text);padding:7px 0;border-radius:8px;cursor:pointer;background:none;border:none;font-family:var(--font);}
-  .cal-day:hover{background:var(--panel-2);}
-  .cal-day.other-month{color:var(--text-dim);opacity:.45;}
+  .cal-day:hover{background:rgba(180,120,255,.20);}
+  .cal-day.other-month{color:var(--text-dim);opacity:.4;}
   .cal-day.today{color:var(--cyan);font-weight:700;}
-  .cal-day.selected{background:linear-gradient(135deg,var(--accent),#6845e6);color:#fff;font-weight:700;}
+  .cal-day.selected{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:700;}
   .cal-footer{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);}
-  .cal-footer button{background:none;border:none;color:var(--accent-2);font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font);}
-  .cal-footer button:hover{color:#fff;}
+  .cal-footer button{background:none;border:none;color:var(--accent-2);font-size:12.5px;font-weight:600;cursor:pointer;}
+
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#22e6ff,#d96bff,#ff4db8);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:13px;color:#fff;cursor:pointer;box-shadow:0 4px 18px -2px rgba(217,107,255,.75);position:relative;}
+  .avatar::before{content:"";position:absolute;inset:-2px;border-radius:50%;background:linear-gradient(135deg,#22e6ff,#ff4db8);z-index:-1;filter:blur(10px);opacity:.75;}
   .avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-  .admin-popover{display:none;position:absolute;top:calc(100% + 10px);right:0;z-index:50;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;width:220px;box-shadow:0 20px 40px -12px rgba(0,0,0,.6);}
+  .admin-popover{display:none;position:absolute;top:calc(100% + 10px);right:0;z-index:50;background:rgba(20,10,35,.95);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);border:1px solid rgba(180,120,255,.30);border-radius:12px;padding:14px;width:220px;}
   .admin-popover.show{display:block;}
   .admin-popover-title{font-size:11px;color:var(--text-dim);letter-spacing:.06em;font-weight:600;margin-bottom:8px;}
-  .admin-popover input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:12.5px;outline:none;font-family:var(--font);}
-  .admin-popover input:focus{border-color:var(--accent-2);}
-  .fetch-status{font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;opacity:0;transform:translateY(-2px);transition:opacity .18s ease,transform .18s ease;display:inline-flex;align-items:center;gap:5px;}
+  .admin-popover input{width:100%;background:rgba(10,3,20,.7);border:1px solid rgba(180,120,255,.28);color:var(--text);padding:8px 10px;border-radius:8px;font-size:12.5px;outline:none;font-family:var(--font);}
+
+  .fetch-status{font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;opacity:0;transform:translateY(-2px);transition:all .18s;display:inline-flex;align-items:center;gap:5px;}
   .fetch-status.show{opacity:1;transform:translateY(0);}
-  .fetch-status.success{background:rgba(62,207,142,.12);color:var(--green);}
-  .fetch-status.error{background:rgba(240,85,95,.12);color:var(--red);}
-  .btn{background:var(--panel-2);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:border-color .15s ease,transform .1s ease,background .15s ease;}
-  .btn:hover{border-color:var(--accent-2);color:#fff;}
+  .fetch-status.success{background:rgba(62,230,154,.16);color:var(--green);}
+  .fetch-status.error{background:rgba(255,77,107,.16);color:var(--red);}
+
+  .btn{background:rgba(35,20,55,.65);border:1px solid rgba(180,120,255,.28);color:var(--text);padding:8px 14px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .btn:hover{border-color:var(--accent-2);color:#fff;background:rgba(180,120,255,.22);transform:translateY(-1px);}
   .btn:active{transform:translateY(1px);}
-  .btn.primary{background:linear-gradient(135deg,var(--accent),#6845e6);border-color:transparent;color:#fff;display:flex;align-items:center;gap:6px;box-shadow:0 6px 16px -6px rgba(124,92,255,.65);}
-  .btn.primary:hover{filter:brightness(1.08);border-color:transparent;}
+  .btn.primary{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border-color:transparent;color:#fff;display:inline-flex;align-items:center;gap:6px;box-shadow:0 6px 22px -4px rgba(177,74,255,.80);}
+  .btn.primary:hover{filter:brightness(1.10);transform:translateY(-1px);}
+  .btn.danger{background:var(--red);border-color:transparent;color:#fff;}
+  .btn.small{padding:6px 10px;font-size:11.5px;}
+
   .spacer{flex:1;}
-  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:13px;color:#fff;cursor:pointer;box-shadow:0 4px 12px -4px rgba(124,92,255,.6);}
   .content{padding:28px 30px 50px;overflow-y:auto;}
   .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
-  .section-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--text);}
+  .section-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;}
   .section-sub{font-size:12px;color:var(--text-dim);margin-top:5px;}
   .head-controls{display:flex;gap:10px;align-items:center;}
-  select{background:var(--panel-2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:9px;font-size:12.5px;font-weight:500;outline:none;cursor:pointer;}
+
+  select{background:rgba(35,20,55,.65);border:1px solid rgba(180,120,255,.28);color:var(--text);padding:8px 12px;border-radius:10px;font-size:12.5px;font-weight:500;outline:none;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  select option{background:#0f0820;color:#f5f0ff;}
+  select:hover{border-color:var(--accent-2);}
+
   .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:36px;}
-  .stat-card{background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--border);border-top:2px solid var(--accent-2);border-radius:12px;padding:24px 20px;text-align:center;transition:transform .15s ease,border-color .15s ease;}
-  .stat-card:hover{transform:translateY(-2px);border-color:var(--accent-2);}
+  .stat-card{background:rgba(20,10,35,.60);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);border:1px solid rgba(180,120,255,.25);border-top:2px solid var(--accent-2);border-radius:14px;padding:24px 20px;text-align:center;transition:all .25s;position:relative;overflow:hidden;}
+  .stat-card:hover{transform:translateY(-3px);border-color:var(--accent-2);}
   .stat-card.completed{border-top-color:var(--green);}
   .stat-card.failed{border-top-color:var(--red);}
   .stat-card.pending{border-top-color:var(--amber);}
@@ -91,146 +146,198 @@
   .stat-card.completed .stat-value{color:var(--green);}
   .stat-card.failed .stat-value{color:var(--red);}
   .stat-card.pending .stat-value{color:var(--amber);}
-  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-  .panel-header{padding:18px 20px;font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.04em;border-bottom:1px solid var(--border-soft);}
+
+  .panel{background:rgba(20,10,35,.62);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);border:1px solid rgba(180,120,255,.25);border-radius:14px;overflow:hidden;box-shadow:0 8px 34px -10px rgba(0,0,0,.7);}
+  .panel-header{padding:18px 20px;font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.04em;border-bottom:1px solid rgba(180,120,255,.16);background:rgba(12,5,25,.38);}
+
   table{width:100%;border-collapse:collapse;}
-  thead th{text-align:left;font-size:10px;color:var(--text-dim);letter-spacing:.09em;padding:12px 20px;border-bottom:1px solid var(--border-soft);font-weight:700;background:var(--bg-2);}
+  thead th{text-align:left;font-size:10px;color:var(--text-dim);letter-spacing:.09em;padding:12px 20px;border-bottom:1px solid rgba(180,120,255,.16);font-weight:700;background:rgba(12,5,25,.55);}
   thead th.num{text-align:center;}
-  tbody td{padding:14px 20px;border-bottom:1px solid var(--border-soft);font-size:13px;}
+  tbody td{padding:14px 20px;border-bottom:1px solid rgba(180,120,255,.10);font-size:13px;}
   tbody tr:last-child td{border-bottom:none;}
-  tbody tr{transition:background .12s ease;}
-  tbody tr:hover{background:var(--panel-2);}
+  tbody tr:hover{background:rgba(180,120,255,.10);}
   .user-name{font-weight:600;color:var(--text);}
   .user-id{font-size:11px;color:var(--text-dim);margin-top:2px;font-family:var(--font-mono);}
   td.num{text-align:center;font-weight:600;color:var(--text-dim);}
-  td.num.done{color:var(--green);}td.num.fail{color:var(--red);}td.num.cncl{color:var(--amber);}
-  @media (max-width:900px){.stat-grid{grid-template-columns:repeat(2,1fr);}.sidebar{position:fixed;z-index:10;height:100vh;}}
-  @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
-  .prox-settings-page{display:none;max-width:860px;flex-direction:column;gap:20px;}
-  .prox-set-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;margin-bottom:16px;}
-  .prox-set-label{font-size:11px;color:var(--text-dim);letter-spacing:.04em;margin:14px 0 6px;font-weight:600;}
-  .prox-textarea{width:100%;min-height:92px;resize:vertical;background:var(--panel-2);color:var(--text);border:1px solid var(--border);padding:12px;border-radius:9px;font-size:13px;outline:none;font-family:var(--font-mono);color-scheme:dark;}
-  .prox-textarea:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(124,92,255,.15);}
-  .prox-set-actions{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;}
-  .prox-set-msg{font-size:12px;min-height:16px;}
-  .prox-set-msg.ok{color:var(--green);}.prox-set-msg.err{color:var(--red);}
-  .prox-set-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-  .prox-set-note{font-size:11px;color:var(--text-dim);line-height:1.7;margin-top:10px;}
-  .prox-set-details{margin-top:22px;border-top:1px solid var(--border-soft);padding-top:14px;}
-  .prox-set-details summary{cursor:pointer;font-size:12.5px;color:var(--text-dim);font-weight:600;padding:6px 0;}
-  .prox-set-details summary:hover{color:var(--accent-2);}
-  .prox-set-details[open] summary{color:var(--text);margin-bottom:8px;}
-  .prox-admin-meta{font-size:10.5px;color:var(--text-dim);margin-top:4px;}
-  .prox-set-sep{border-top:1px solid var(--border-soft);margin:22px 0 4px;}
-  @media (max-width:800px){.prox-set-grid{grid-template-columns:1fr;}}
-  .prox-public{display:none;position:fixed;inset:0;z-index:200;overflow:auto;padding:48px 20px;background:radial-gradient(900px 420px at 50% -10%,rgba(124,92,255,.18),transparent 60%),var(--bg);}
-  .prox-public.show{display:block;}
-  .prox-public-wrap{max-width:560px;margin:0 auto;}
-  .prox-public-brand{font-family:var(--font-display);font-weight:700;font-size:20px;text-align:center;margin-bottom:26px;}
-  .prox-public-brand span{background:linear-gradient(135deg,var(--accent-2),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .prox-public-back{position:fixed;top:16px;left:16px;z-index:210;display:none;}
-  .prox-public-back.show{display:block;}
-  .prox-pub-note{font-size:12px;color:var(--text-dim);margin-top:10px;line-height:1.6;}
-  .prox-pub-detail{margin-top:18px;background:var(--bg);border:1px solid var(--border-soft);border-radius:11px;padding:16px;}
-  .prox-pub-detail .name{font-weight:600;font-size:14px;word-break:break-all;}
-  .prox-pub-detail .wid{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-top:4px;}
-  .prox-pub-stats{display:flex;gap:16px;margin-top:12px;font-size:12px;}
-  .prox-pub-stats .done{color:var(--green);}.prox-pub-stats .fail{color:var(--red);}
-  .prox-pub-badge{margin-left:8px;vertical-align:middle;}
+  td.num.done{color:var(--green);}
+  td.num.fail{color:var(--red);}
+  td.num.cncl{color:var(--amber);}
+
+  @media (max-width:900px){.stat-grid{grid-template-columns:repeat(2,1fr);}.sidebar{position:fixed;z-index:30;height:100vh;}}
+
+  .prox-users-page{display:none;}
+  .prox-users-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:16px;}
+  .prox-users-title{font-family:var(--font-display);font-size:13px;letter-spacing:.09em;font-weight:700;}
+  .prox-users-sub{font-size:11px;color:var(--text-dim);margin-top:5px;}
+  .prox-users-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .prox-users-email{width:270px;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.28);color:var(--text);padding:9px 11px;border-radius:9px;outline:none;font-size:12px;}
+  .prox-users-toolbar{background:rgba(20,10,35,.62);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(180,120,255,.25);border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .prox-users-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:12px;}
+  .prox-user-card{background:rgba(20,10,35,.62);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(180,120,255,.25);border-radius:12px;padding:14px;min-height:140px;transition:all .2s;cursor:pointer;}
+  .prox-user-card:hover{border-color:var(--accent-2);box-shadow:0 10px 28px -10px rgba(177,74,255,.60);transform:translateY(-2px);}
+  .prox-user-top{display:flex;align-items:flex-start;gap:9px;}
+  .prox-managed-user-check{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;margin-top:2px;flex:0 0 auto;}
+  .prox-user-email-text{font-size:13px;font-weight:700;line-height:1.35;word-break:break-word;flex:1;}
+  .prox-user-status{font-family:var(--font-display);font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.04em;}
+  .prox-user-status.pending{color:var(--amber);background:rgba(255,184,77,.15);}
+  .prox-user-status.approved{color:var(--green);background:rgba(62,230,154,.15);}
+  .prox-user-status.rejected{color:var(--red);background:rgba(255,77,107,.15);}
+  .prox-user-status.revoked{color:#a89bff;background:rgba(124,92,255,.18);}
+  .prox-user-id,.prox-user-key{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);margin-top:8px;word-break:break-all;}
+  .prox-user-key{color:#a89bff;}
+  .prox-user-stats{font-size:10px;color:var(--text-dim);margin-top:9px;}
+  .prox-user-stats .done{color:var(--green);}
+  .prox-user-stats .fail{color:var(--red);}
+  .prox-users-empty{padding:55px 20px;text-align:center;color:var(--text-dim);border:1px dashed rgba(180,120,255,.35);border-radius:10px;}
+
+  .prox-user-detail{display:none;flex-direction:column;gap:16px;max-width:640px;}
+  .prox-user-detail.show{display:flex;}
+  .prox-user-detail-back{display:inline-flex;align-items:center;gap:6px;width:fit-content;}
+  .prox-ud-head{padding:18px 20px;background:rgba(20,10,35,.70);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(180,120,255,.28);border-radius:14px;position:relative;overflow:hidden;}
+  .prox-ud-head::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(177,74,255,.12),transparent 60%);pointer-events:none;}
+  .prox-ud-email{font-size:16px;font-weight:700;word-break:break-all;position:relative;}
+  .prox-ud-id{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-top:6px;word-break:break-all;position:relative;}
+  .prox-ud-key{font-family:var(--font-mono);font-size:10px;color:#a89bff;margin-top:6px;word-break:break-all;position:relative;}
+  .prox-ud-stats{display:flex;gap:14px;margin-top:12px;font-size:12px;position:relative;flex-wrap:wrap;}
+  .prox-ud-stats span b{color:var(--text);font-weight:700;}
+  .prox-ud-stats .done{color:var(--green);}
+  .prox-ud-stats .fail{color:var(--red);}
+
+  .prox-ud-section{padding:18px 20px;background:rgba(20,10,35,.62);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(180,120,255,.25);border-radius:14px;}
+  .prox-ud-section-title{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.09em;color:var(--text-dim);margin-bottom:14px;}
+  .prox-ud-approval-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+  .prox-ud-approval-pill{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:8px;margin-left:auto;}
+  .prox-ud-approval-pill.pending{color:var(--green);background:rgba(62,230,154,.15);border:1px solid rgba(62,230,154,.35);}
+  .prox-ud-approval-pill.approved{color:var(--green);background:rgba(62,230,154,.20);border:1px solid rgba(62,230,154,.45);}
+  .prox-ud-approval-pill.rejected{color:var(--red);background:rgba(255,77,107,.18);border:1px solid rgba(255,77,107,.40);}
+  .prox-ud-approval-pill.revoked{color:#a89bff;background:rgba(124,92,255,.20);border:1px solid rgba(124,92,255,.45);}
+  .prox-ud-approval-select{flex:1;min-width:140px;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.30);color:var(--text);padding:10px 12px;border-radius:10px;font-size:13px;outline:none;cursor:pointer;}
+  .prox-ud-approval-btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:none;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px -6px rgba(177,74,255,.85);transition:all .2s;}
+  .prox-ud-approval-btn:hover{filter:brightness(1.10);}
+  .prox-ud-delete-btn{width:100%;background:linear-gradient(135deg,#e0334a,#ff4d6b);border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px -6px rgba(255,77,107,.65);transition:all .2s;}
+
+  .prox-ud-filters{display:flex;flex-direction:column;gap:10px;}
+  .prox-ud-filters select,.prox-ud-filters input{width:100%;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.28);color:var(--text);padding:11px 14px;border-radius:10px;font-size:13px;outline:none;}
+  .prox-ud-filters input::placeholder{color:var(--text-dim);}
+  .prox-ud-filters select:focus,.prox-ud-filters input:focus{border-color:var(--accent-2);}
+  .prox-ud-load-row{display:flex;gap:8px;align-items:center;}
+  .prox-ud-load-btn{flex:1;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px -6px rgba(177,74,255,.85);transition:all .2s;}
+  .prox-ud-icon-btn{width:42px;height:42px;background:rgba(35,20,55,.65);border:1px solid rgba(180,120,255,.30);border-radius:10px;color:var(--text);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+  .prox-ud-icon-btn:hover{border-color:var(--accent-2);background:rgba(180,120,255,.22);}
+  .prox-ud-pager{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:4px;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.20);border-radius:10px;padding:6px 10px;font-size:12px;color:var(--text-dim);}
+  .prox-ud-pager button{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:15px;padding:6px 0;}
+  .prox-ud-pager button:hover{color:var(--accent-2);}
+  .prox-ud-pager .center{text-align:center;}
+  .prox-ud-range-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+  .prox-ud-range-row .btn{padding:11px 6px;font-size:12.5px;text-align:center;justify-content:center;display:flex;}
+  .prox-ud-range-row .btn.on{border-color:var(--accent-2);color:#fff;background:rgba(180,120,255,.22);}
+
+  .prox-ud-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .prox-ud-stat{padding:14px 10px;text-align:center;background:rgba(20,10,35,.62);border:1px solid rgba(180,120,255,.25);border-radius:12px;}
+  .prox-ud-stat .lbl{font-size:10px;letter-spacing:.09em;font-weight:700;color:var(--text-dim);}
+  .prox-ud-stat .val{font-family:var(--font-display);font-size:26px;font-weight:700;margin-top:6px;}
+  .prox-ud-stat.returned{border-left:2px solid #a89bff;}.prox-ud-stat.returned .val{color:#fff;}
+  .prox-ud-stat.active{border-left:2px solid var(--amber);}.prox-ud-stat.active .val{color:var(--amber);}
+  .prox-ud-stat.done{border-left:2px solid var(--green);}.prox-ud-stat.done .val{color:var(--green);}
+  .prox-ud-stat.fail{border-left:2px solid var(--red);}.prox-ud-stat.fail .val{color:var(--red);}
+
   .prox-bindings-page{display:none;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start;}
   .prox-bind-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;margin-bottom:16px;}
   .prox-bind-label{font-size:11px;color:var(--text-dim);margin:14px 0 6px;letter-spacing:.03em;}
-  .prox-input{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);padding:11px 12px;border-radius:9px;font-size:13px;outline:none;font-family:var(--font);color-scheme:dark;}
+  .prox-input{width:100%;background:rgba(10,3,20,.72);color:var(--text);border:1px solid rgba(180,120,255,.28);padding:11px 12px;border-radius:10px;font-size:13px;outline:none;font-family:var(--font);color-scheme:dark;}
   .prox-input.mono{font-family:var(--font-mono);font-size:12px;}
-  .prox-input:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(124,92,255,.15);}
+  .prox-input:focus{border-color:var(--accent-2);}
   .prox-bind-actions{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;}
   .prox-bind-msg{font-size:12px;margin-top:12px;min-height:16px;}
-  .prox-bind-msg.ok{color:var(--green);}.prox-bind-msg.err{color:var(--red);}
+  .prox-bind-msg.ok{color:var(--green);}
+  .prox-bind-msg.err{color:var(--red);}
   .prox-bind-note{font-size:11px;color:var(--text-dim);line-height:1.7;margin-top:14px;}
   .prox-bind-sep{border-top:1px solid var(--border-soft);margin:22px 0 4px;}
-  .prox-bound-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);border:1px solid var(--border-soft);border-radius:9px;padding:9px 12px;margin-top:8px;font-size:12px;}
+  .prox-bound-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.20);border-radius:10px;padding:9px 12px;margin-top:8px;font-size:12px;}
   .prox-bound-row .k{font-family:var(--font-mono);color:var(--accent-2);}
   .prox-bound-row .w{color:var(--text-dim);}
   .prox-bound-empty{font-size:12px;color:var(--text-dim);margin-top:8px;}
-  .prox-vis-pill{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:6px;background:rgba(124,92,255,.16);color:var(--accent-2);}
-  .prox-vis-pill.private{background:rgba(124,92,255,.16);color:#8b7dff;}
+  .prox-vis-pill{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:6px;background:rgba(124,92,255,.22);color:var(--accent-2);}
+  .prox-vis-pill.private{background:rgba(124,92,255,.22);color:#a89bff;}
   .prox-worker-id{font-family:var(--font-mono);font-size:12px;}
   .prox-worker-btns{display:flex;gap:8px;justify-content:flex-end;}
   .prox-worker-btns .btn{padding:7px 12px;font-size:12px;}
   .prox-vis-foot{padding:14px 20px;font-size:11px;color:var(--text-dim);border-top:1px solid var(--border-soft);}
   @media (max-width:1000px){.prox-bindings-page{grid-template-columns:1fr;}}
+
   .prox-console-page{display:none;grid-template-columns:280px 1fr;gap:20px;align-items:start;}
   .prox-console-side{display:flex;flex-direction:column;gap:16px;}
-  .prox-console-hint{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:18px 16px;text-align:center;font-size:12px;color:var(--text-dim);}
+  .prox-console-hint{background:rgba(20,10,35,.62);border:1px solid rgba(180,120,255,.25);border-left:3px solid var(--accent);border-radius:10px;padding:18px 16px;text-align:center;font-size:12px;color:var(--text-dim);}
   .prox-console-hint b{color:var(--text);}
-  .prox-console-hint.has-user{color:var(--text);text-align:left;}
-  .prox-console-hint .who{font-weight:600;font-size:13px;word-break:break-all;}
-  .prox-console-hint .whoid{font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);margin-top:4px;word-break:break-all;}
   .prox-filter-title{font-family:var(--font-display);font-size:12px;letter-spacing:.06em;font-weight:700;margin-bottom:14px;}
-  .prox-filter-select{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:9px;font-size:13px;outline:none;color-scheme:dark;cursor:pointer;}
-  .prox-filter-select:focus{border-color:var(--accent-2);}
-  .prox-pager{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-top:12px;background:var(--bg);border:1px solid var(--border-soft);border-radius:9px;overflow:hidden;}
+  .prox-filter-select{width:100%;background:rgba(10,3,20,.72);color:var(--text);border:1px solid rgba(180,120,255,.28);padding:10px 12px;border-radius:10px;font-size:13px;outline:none;color-scheme:dark;cursor:pointer;}
+  .prox-pager{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-top:12px;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.20);border-radius:10px;overflow:hidden;}
   .prox-pager button{background:none;border:none;color:var(--text-dim);padding:9px 0;cursor:pointer;font-size:14px;}
-  .prox-pager button:hover{color:var(--text);background:var(--panel-2);}
   .prox-pager span{text-align:center;font-size:12px;color:var(--text);}
-  .prox-range-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
-  .prox-range-row .btn{padding:9px 6px;font-size:12px;text-align:center;}
-  .prox-range-row .btn.on{border-color:var(--accent-2);color:#fff;background:rgba(124,92,255,.15);}
   .prox-jobs-panel{min-width:0;}
   .prox-jobs-scroll{overflow-x:auto;}
   .prox-jobs-scroll table{min-width:1100px;}
   .prox-jobs-empty{text-align:center;color:var(--text-dim);font-size:13px;padding:26px 0;}
   @media (max-width:900px){.prox-console-page{grid-template-columns:1fr;}}
-  .prox-users-page{display:none;}
-  .prox-user-card{cursor:pointer;}
-  .prox-user-vis{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;}
-  .prox-user-vis .btn{padding:6px 12px;font-size:11.5px;}
-  .content:has(.prox-users-page[style*="display: block"]) #stat-grid{display:none !important;}
-  .prox-users-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:16px;}
-  .prox-users-title{font-family:var(--font-display);font-size:12px;letter-spacing:.09em;font-weight:700;}
-  .prox-users-sub{font-size:10px;color:var(--text-dim);margin-top:5px;}
-  .prox-users-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-  .prox-users-email{width:270px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:8px;outline:none;font-size:12px;}
-  .prox-users-email:focus{border-color:var(--accent);}
-  .prox-users-toolbar{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-  .prox-users-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:12px;}
-  .prox-user-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;min-height:156px;}
-  .prox-user-top{display:flex;align-items:flex-start;gap:9px;}
-  .prox-user-check{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;margin-top:2px;flex:0 0 auto;}
-  .prox-user-email-text{font-size:13px;font-weight:700;line-height:1.35;word-break:break-word;flex:1;}
-  .prox-user-status{font-family:var(--font-display);font-size:8px;color:var(--amber);font-weight:700;}
-  .prox-user-id,.prox-user-key{font-family:var(--font-mono);font-size:8px;color:var(--text-dim);margin-top:8px;word-break:break-all;}
-  .prox-user-key{color:#777cff;}
-  .prox-user-stats{font-size:9px;color:var(--text-dim);margin-top:9px;}
-  .prox-user-stats .done{color:var(--green);}.prox-user-stats .fail{color:var(--red);}
-  .prox-user-delete{margin-top:12px;width:100%;justify-content:center;background:var(--red);}
-  .prox-users-empty{padding:55px 20px;text-align:center;color:var(--text-dim);border:1px dashed var(--border);border-radius:8px;}
-  @media(max-width:800px){.prox-users-email{width:220px;}}
-  @media(max-width:600px){.prox-users-email{width:100%;}.prox-users-actions{width:100%;}.prox-users-actions .prox-users-email{flex:1;}}
-  .prox-modal-backdrop{display:none;position:fixed;inset:0;z-index:500;background:rgba(5,5,12,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;}
+
+  .prox-settings-page{display:none;max-width:860px;flex-direction:column;gap:20px;}
+  .prox-set-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;margin-bottom:16px;}
+  .prox-set-label{font-size:11px;color:var(--text-dim);letter-spacing:.04em;margin:14px 0 6px;font-weight:600;}
+  .prox-textarea{width:100%;min-height:92px;resize:vertical;background:rgba(10,3,20,.72);color:var(--text);border:1px solid rgba(180,120,255,.28);padding:12px;border-radius:10px;font-size:13px;outline:none;font-family:var(--font-mono);color-scheme:dark;}
+  .prox-set-actions{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;}
+  .prox-set-msg{font-size:12px;min-height:16px;}
+  .prox-set-msg.ok{color:var(--green);}
+  .prox-set-msg.err{color:var(--red);}
+  .prox-set-note{font-size:11px;color:var(--text-dim);line-height:1.7;margin-top:10px;}
+  .prox-set-sep{border-top:1px solid var(--border-soft);margin:22px 0 4px;}
+  .prox-admin-meta{font-size:10.5px;color:var(--text-dim);margin-top:4px;}
+
+  .prox-public{display:none;position:fixed;inset:0;z-index:200;overflow:auto;padding:48px 20px;background:rgba(8,1,15,.94);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);}
+  .prox-public.show{display:block;}
+  .prox-public-wrap{max-width:560px;margin:0 auto;}
+  .prox-public-brand{font-family:var(--font-display);font-weight:700;font-size:20px;text-align:center;margin-bottom:26px;}
+  .prox-public-brand span{background:linear-gradient(135deg,var(--accent-2),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .prox-pub-note{font-size:12px;color:var(--text-dim);margin-top:10px;line-height:1.6;}
+  .prox-pub-detail{margin-top:18px;background:rgba(10,3,20,.72);border:1px solid rgba(180,120,255,.20);border-radius:11px;padding:16px;}
+  .prox-pub-detail .name{font-weight:600;font-size:14px;word-break:break-all;}
+
+  .prox-modal-backdrop{display:none;position:fixed;inset:0;z-index:500;background:rgba(5,1,12,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px;}
   .prox-modal-backdrop.show{display:flex;}
-  .prox-modal{background:var(--panel);border:1px solid var(--border);border-radius:14px;width:100%;max-width:640px;max-height:90vh;overflow:auto;box-shadow:0 30px 60px -20px rgba(0,0,0,.8);}
-  .prox-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border-soft);}
+  .prox-modal{background:rgba(20,10,35,.94);backdrop-filter:blur(30px);border:1px solid rgba(180,120,255,.32);border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow:auto;}
+  .prox-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid rgba(180,120,255,.20);}
   .prox-modal-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;}
-  .prox-modal-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;}
-  .prox-modal-close:hover{background:var(--panel-2);color:var(--text);}
+  .prox-modal-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;}
   .prox-modal-body{padding:20px;}
-  .prox-modal-label{font-size:11px;color:var(--text-dim);letter-spacing:.04em;font-weight:600;margin:14px 0 6px;}
-  .prox-modal-label:first-child{margin-top:0;}
-  .prox-modal-textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);padding:12px;border-radius:9px;font-size:12.5px;outline:none;font-family:var(--font-mono);resize:vertical;color-scheme:dark;line-height:1.55;}
-  .prox-modal-textarea:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(124,92,255,.15);}
-  .prox-modal-link{min-height:60px;word-break:break-all;}
-  .prox-modal-body-box{min-height:170px;font-family:var(--font);font-size:13px;}
+  .prox-modal-label{font-size:11px;color:var(--text-dim);font-weight:600;margin:14px 0 6px;}
+  .prox-modal-textarea{width:100%;background:rgba(10,3,20,.72);color:var(--text);border:1px solid rgba(180,120,255,.28);padding:12px;border-radius:10px;font-size:12.5px;outline:none;font-family:var(--font-mono);resize:vertical;color-scheme:dark;line-height:1.55;}
   .prox-modal-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center;}
-  .prox-modal-note{background:rgba(63,214,200,.08);border:1px solid rgba(63,214,200,.25);border-radius:9px;padding:12px 14px;font-size:12px;color:var(--text-dim);line-height:1.75;margin-bottom:4px;}
+  .prox-modal-note{background:rgba(34,230,255,.10);border:1px solid rgba(34,230,255,.32);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-dim);line-height:1.75;}
   .prox-modal-note b{color:var(--cyan);}
-  .prox-modal-note ol{margin-left:18px;margin-top:6px;}
-  .prox-modal-note li{margin-bottom:4px;}
   .prox-modal-msg{font-size:12px;margin-left:6px;}
-  .prox-modal-msg.ok{color:var(--green);}.prox-modal-msg.err{color:var(--red);}
+  .prox-modal-msg.ok{color:var(--green);}
+  .prox-modal-msg.err{color:var(--red);}
 </style>
 </head>
 <body>
+
+<div class="live-wallpaper"></div>
+<div class="live-aurora"></div>
+<div class="live-grid"></div>
+<div class="live-particles"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<!-- LOCK SCREEN — ALWAYS SHOWS ON LOAD -->
+<div id="prox-lock-screen" class="prox-lock-screen show">
+  <div class="prox-lock-box" id="prox-lock-box">
+    <div class="prox-lock-icon">🔐</div>
+    <div class="prox-lock-logo">PRO<span>X</span></div>
+    <div class="prox-lock-sub">Enter access key to continue</div>
+    <input type="password" id="prox-lock-input" class="prox-lock-input" placeholder="••••••••" autocomplete="off" autofocus>
+    <button type="button" id="prox-lock-btn" class="prox-lock-btn">🔓 Unlock Panel</button>
+    <div id="prox-lock-msg" class="prox-lock-msg"></div>
+  </div>
+</div>
+
+<div class="prox-app-wrap" id="prox-app-wrap">
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">
@@ -252,7 +359,6 @@
 
   <div class="main">
     <div class="topbar">
-      <div class="search-wrap"><span class="icon">🔑</span><input type="password" id="access-key" placeholder="Enter access key"></div>
       <div class="date-field" id="from-field">FROM <input type="text" id="date-from" readonly><span class="field-arrows">▲▼</span></div>
       <div class="date-field" id="to-field">TO <input type="text" id="date-to" readonly><span class="field-arrows">▲▼</span></div>
       <div id="calendar-popup" class="calendar-popup"></div>
@@ -274,39 +380,118 @@
     </div>
 
     <div class="content">
+
       <div id="prox-users-page" class="prox-users-page">
-        <div class="prox-users-head">
-          <div><div class="prox-users-title">USER MANAGEMENT <span id="prox-users-count">(0)</span></div><div class="prox-users-sub">Only the users you add by email will appear here.</div></div>
-          <div class="prox-users-actions">
-            <input id="prox-users-email" class="prox-users-email" type="email" placeholder="Enter user email">
-            <button id="prox-users-create" class="btn primary">+ Create User</button>
-            <button id="prox-users-delete-selected" class="btn" style="background:var(--red);">Delete Selected</button>
+        <div id="prox-users-grid-view">
+          <div class="prox-users-head">
+            <div>
+              <div class="prox-users-title">USER MANAGEMENT <span id="prox-users-count">(0)</span></div>
+              <div class="prox-users-sub">Only the users you add by email will appear here.</div>
+            </div>
+            <div class="prox-users-actions">
+              <input id="prox-users-email" class="prox-users-email" type="email" placeholder="Enter user email">
+              <button id="prox-users-create" class="btn primary">+ Create User</button>
+              <button id="prox-users-delete-selected" class="btn danger">Delete Selected</button>
+            </div>
+          </div>
+          <div class="prox-users-toolbar">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;">
+              <input id="prox-users-select-all" type="checkbox" style="accent-color:var(--accent);">
+              Select all added users
+            </label>
+            <span id="prox-users-selected-count" style="font-size:10px;color:var(--text-dim);">0 selected</span>
+            <button id="prox-users-clear-selection" class="btn small">Clear Selection</button>
+            <span id="prox-users-message" style="font-size:10px;color:var(--text-dim);"></span>
+          </div>
+          <div id="prox-users-grid" class="prox-users-grid"></div>
+          <div id="prox-users-empty" class="prox-users-empty">No users added yet. Enter an email above to create the first user.</div>
+        </div>
+
+        <div id="prox-user-detail" class="prox-user-detail">
+          <button type="button" id="prox-user-back" class="btn prox-user-detail-back">← Back to Users</button>
+          <div class="prox-ud-head">
+            <div class="prox-ud-email" id="prox-ud-email">—</div>
+            <div class="prox-ud-id" id="prox-ud-id">user_</div>
+            <div class="prox-ud-key" id="prox-ud-key">API Key: —</div>
+            <div class="prox-ud-stats">
+              <span>Pend: <b id="prox-ud-pend">0</b></span>
+              <span class="done">Done: <b id="prox-ud-done">0</b></span>
+              <span class="fail">Fail: <b id="prox-ud-fail">0</b></span>
+            </div>
+          </div>
+          <div class="prox-ud-section">
+            <div class="prox-ud-approval-row" style="justify-content:space-between;">
+              <div class="prox-ud-section-title" style="margin:0;">APPROVAL STATUS</div>
+              <span class="prox-ud-approval-pill pending" id="prox-ud-approval-pill">PENDING</span>
+            </div>
+            <div class="prox-ud-approval-row">
+              <select class="prox-ud-approval-select" id="prox-ud-approval-select">
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="revoked">Revoked</option>
+              </select>
+              <button type="button" class="prox-ud-approval-btn" id="prox-ud-approval-btn">Set</button>
+            </div>
+            <button type="button" class="prox-ud-delete-btn" id="prox-ud-delete-btn">🗑 Delete User</button>
+          </div>
+          <div class="prox-ud-section">
+            <div class="prox-ud-section-title">FILTERS</div>
+            <div class="prox-ud-filters">
+              <select id="prox-ud-status-filter">
+                <option value="all">Status: All</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="completed">Completed</option>
+                <option value="failed">Failed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="blocked">Blocked</option>
+              </select>
+              <select id="prox-ud-limit-filter">
+                <option value="50">Limit: 50</option>
+                <option value="500">Limit: 500</option>
+                <option value="1000" selected>Limit: 1000</option>
+                <option value="2000">Limit: 2000</option>
+                <option value="3000">Limit: 3000</option>
+              </select>
+              <input type="text" id="prox-ud-search" placeholder="Search ID / Page...">
+              <div class="prox-ud-load-row">
+                <button type="button" class="prox-ud-load-btn" id="prox-ud-load-btn">Load Jobs</button>
+                <button type="button" class="prox-ud-icon-btn" id="prox-ud-refresh-btn" title="Refresh">↻</button>
+                <button type="button" class="prox-ud-icon-btn" id="prox-ud-download-btn" title="Download">⬇</button>
+              </div>
+              <div class="prox-ud-pager">
+                <button type="button" id="prox-ud-prev">‹</button>
+                <span class="center" id="prox-ud-page-label">Page 1 • Returned 0 • Scanned 0</span>
+                <button type="button" id="prox-ud-next">›</button>
+              </div>
+              <div class="prox-ud-range-row">
+                <button type="button" class="btn on" id="prox-ud-today">Today (PKT)</button>
+                <button type="button" class="btn" id="prox-ud-week">Last 7 Days</button>
+              </div>
+            </div>
+          </div>
+          <div class="prox-ud-stat-grid">
+            <div class="prox-ud-stat returned"><div class="lbl">RETURNED</div><div class="val" id="prox-ud-st-returned">0</div></div>
+            <div class="prox-ud-stat active"><div class="lbl">ACTIVE</div><div class="val" id="prox-ud-st-active">0</div></div>
+            <div class="prox-ud-stat done"><div class="lbl">DONE</div><div class="val" id="prox-ud-st-done">0</div></div>
+            <div class="prox-ud-stat fail"><div class="lbl">FAIL</div><div class="val" id="prox-ud-st-fail">0</div></div>
           </div>
         </div>
-        <div class="prox-users-toolbar">
-          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;"><input id="prox-users-select-all" type="checkbox" style="accent-color:var(--accent);">Select all added users</label>
-          <span id="prox-users-selected-count" style="font-size:10px;color:var(--text-dim);">0 selected</span>
-          <button id="prox-users-clear-selection" class="btn" style="padding:6px 10px;">Clear Selection</button>
-          <span id="prox-users-message" style="font-size:10px;color:var(--text-dim);"></span>
-        </div>
-        <div id="prox-users-grid" class="prox-users-grid"></div>
-        <div id="prox-users-empty" class="prox-users-empty">No users added yet. Enter an email above to create the first user.</div>
       </div>
 
       <div id="prox-console-page" class="prox-console-page">
         <div class="prox-console-side">
           <div id="prox-console-hint" class="prox-console-hint">👆 Select user from <b>Users</b> tab</div>
-          <div class="panel" style="padding:20px;">
-            <div class="prox-filter-title">FILTERS</div>
-            <select id="prox-status-filter" class="prox-filter-select"><option value="all">Status: All</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="completed">Completed</option><option value="failed">Failed</option><option value="cancelled">Cancelled</option><option value="blocked">Blocked</option></select>
-            <select id="prox-limit-filter" class="prox-filter-select" style="margin-top:12px;"><option value="50">Limit: 50</option><option value="500">Limit: 500</option><option value="1000" selected>Limit: 1000</option><option value="2000">Limit: 2000</option><option value="3000">Limit: 3000</option></select>
-            <div class="prox-pager"><button type="button" id="prox-page-prev">‹</button><span id="prox-page-label">Page 1</span><button type="button" id="prox-page-next">›</button></div>
-            <div class="prox-range-row"><button type="button" class="btn on" id="prox-range-today">Today (PKT)</button><button type="button" class="btn" id="prox-range-week">Last 7 Days</button></div>
-          </div>
         </div>
         <div class="panel prox-jobs-panel">
           <div class="panel-header">Job Details</div>
-          <div class="prox-jobs-scroll"><table><thead><tr><th>JOB ID</th><th>ACTION</th><th>PRODUCT</th><th>PAGE ID</th><th>PAGE LINK</th><th>PAGE NAME</th><th>PAYOUT ID</th><th>STATUS</th><th>RESULT</th><th>TIME</th><th>ACTIONS</th></tr></thead><tbody id="prox-jobs-body"></tbody></table></div>
+          <div class="prox-jobs-scroll">
+            <table>
+              <thead><tr><th>JOB ID</th><th>ACTION</th><th>PRODUCT</th><th>STATUS</th><th>RESULT</th><th>TIME</th></tr></thead>
+              <tbody id="prox-jobs-body"><tr><td colspan="6" class="prox-jobs-empty">No jobs loaded</td></tr></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -314,30 +499,28 @@
         <div class="panel" style="padding:22px;">
           <div class="prox-bind-title">BIND API KEY</div>
           <div class="prox-bind-label" style="margin-top:0;">API KEY</div>
-          <input id="prox-bind-key" class="prox-input mono" type="text" list="prox-key-list" placeholder="Paste user API key here" autocomplete="off">
+          <input id="prox-bind-key" class="prox-input mono" type="text" list="prox-key-list" placeholder="Paste user API key here">
           <datalist id="prox-key-list"></datalist>
           <div class="prox-bind-label">TARGET WORKER</div>
-          <select id="prox-bind-worker" class="prox-input" style="cursor:pointer;"></select>
-          <div class="prox-bind-actions"><button type="button" id="prox-bind-btn" class="btn primary">🔗 Bind</button><button type="button" id="prox-unbind-btn" class="btn">Unbind</button></div>
+          <select id="prox-bind-worker" class="prox-input"></select>
+          <div class="prox-bind-actions">
+            <button type="button" id="prox-bind-btn" class="btn primary">🔗 Bind</button>
+            <button type="button" id="prox-unbind-btn" class="btn">Unbind</button>
+          </div>
           <div id="prox-bind-msg" class="prox-bind-msg"></div>
-          <div class="prox-bind-note">• Bound API keys automatically route jobs to their assigned worker.<br>• The public UI will hide the worker dropdown for bound keys.</div>
           <div class="prox-bind-sep"></div>
-          <div class="prox-bind-label">ADD WORKER (enter worker's user)</div>
-          <div style="display:flex;gap:10px;"><input id="prox-worker-label" class="prox-input" type="text" placeholder="Worker user / name" autocomplete="off"><button type="button" id="prox-worker-add" class="btn primary" style="white-space:nowrap;">+ Add Worker</button></div>
+          <div class="prox-bind-label">ADD WORKER</div>
+          <div style="display:flex;gap:10px;">
+            <input id="prox-worker-label" class="prox-input" type="text" placeholder="Worker user / name">
+            <button type="button" id="prox-worker-add" class="btn primary">+ Add Worker</button>
+          </div>
           <div class="prox-bind-sep"></div>
           <div class="prox-bind-label">BOUND KEYS</div>
           <div id="prox-bound-list"></div>
         </div>
         <div class="panel">
-          <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-            <span>WORKER VISIBILITY</span>
-            <span style="display:flex;gap:8px;">
-              <button type="button" id="prox-public-preview" class="btn" style="padding:6px 12px;font-size:11.5px;">👁 Preview public view</button>
-              <button type="button" id="prox-public-newtab" class="btn" style="padding:6px 12px;font-size:11.5px;">↗ Open in new tab</button>
-            </span>
-          </div>
-          <table><thead><tr><th>WORKER</th><th>LABEL</th><th>ONLINE</th><th>VISIBILITY</th><th></th></tr></thead><tbody id="prox-workers-body"></tbody></table>
-          <div class="prox-vis-foot">• "Private" workers are hidden from the public dropdown but remain routable via bound API keys.</div>
+          <div class="panel-header">WORKER VISIBILITY</div>
+          <table><thead><tr><th>WORKER</th><th>LABEL</th><th>VISIBILITY</th><th></th></tr></thead><tbody id="prox-workers-body"></tbody></table>
         </div>
       </div>
 
@@ -351,133 +534,66 @@
             <button type="button" id="prox-cfg-reload" class="btn">Reload</button>
             <span id="prox-cfg-msg" class="prox-set-msg"></span>
           </div>
-
           <div class="prox-set-sep"></div>
           <div class="prox-set-label">ADMIN GMAIL</div>
           <div style="display:flex;gap:10px;">
-            <input id="prox-admin-invite-email" class="prox-input" type="email" placeholder="Enter gmail to make admin" autocomplete="off">
-            <button type="button" id="prox-admin-invite" class="btn primary" style="white-space:nowrap;">✉ Add Admin</button>
+            <input id="prox-admin-invite-email" class="prox-input" type="email" placeholder="Enter gmail">
+            <button type="button" id="prox-admin-invite" class="btn primary">✉ Add Admin</button>
           </div>
-          <div class="prox-set-note">A notification goes to this gmail. They become admin only after they click the link in it.</div>
           <div id="prox-admin-msg" class="prox-set-msg" style="margin-top:8px;"></div>
-
           <div class="prox-set-label">ADMIN RECORDS</div>
           <div id="prox-admin-list"></div>
-
-          <details class="prox-set-details" id="prox-mail-details">
-            <summary>📧 Automatic Email Service — FormSubmit (No Signup Required!)</summary>
-            <div class="prox-set-note" style="margin-top:12px;line-height:1.9;color:var(--text);">
-              <b style="color:var(--green);">✓ Ab automatic email system ON hai — kuch setup nahi chahiye.</b><br><br>
-              <b>Kaise kaam karta hai:</b><br>
-              • Jab tum kisi ko <b>Add Admin</b> karte ho, email turant chali jayegi<br>
-              • <b>Pehli baar</b>: FormSubmit ki taraf se recipient ko ek <b>activation email</b> aayegi — woh ek baar "Activate" click karega<br>
-              • Uske baad har invite automatically deliver hoga<br>
-              • Recipient ko email mein <b>"Approve & become admin"</b> link milega<br><br>
-              <b style="color:var(--amber);">⚠️ Important:</b> Recipient ko <b>Spam folder</b> bhi check karne ko bolna — pehli email kabhi kabhi spam mein jaati hai.
-            </div>
-            <div class="prox-set-note" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-soft);">
-              <b style="color:var(--text-dim);">Optional: EmailJS (agar aur control chahiye)</b><br>
-              EmailJS 200 emails/month deta hai aur recipient ko activation nahi karni padti. Setup:
-              <a href="https://www.emailjs.com/" target="_blank" style="color:var(--cyan);">emailjs.com</a> → Service ID + Template ID + Public Key lo → neeche bharo.
-            </div>
-            <div class="prox-set-grid" style="margin-top:14px;">
-              <input id="prox-mail-service" class="prox-input mono" type="text" placeholder="Service ID (optional)" autocomplete="off">
-              <input id="prox-mail-template" class="prox-input mono" type="text" placeholder="Template ID (optional)" autocomplete="off">
-              <input id="prox-mail-key" class="prox-input mono" type="text" placeholder="Public Key (optional)" autocomplete="off">
-            </div>
-            <div class="prox-set-actions">
-              <button type="button" id="prox-mail-save" class="btn">💾 Save EmailJS (optional)</button>
-              <button type="button" id="prox-mail-test" class="btn">🧪 Send Test Email</button>
-              <span id="prox-mail-msg" class="prox-set-msg"></span>
-            </div>
-          </details>
         </div>
       </div>
 
-      <div class="section-head">
-        <div><div class="section-title">GLOBAL STATISTICS (PKT)</div><div class="section-sub" id="date-range-sub">2026-09-27 → 2026-09-27 · Users: 0</div></div>
-        <div class="head-controls">
-          <select><option>Today</option><option>Last 7 Days</option><option>This Month</option></select>
-          <select><option>All Users</option><option>Active Only</option></select>
-          <button class="btn primary" id="fetch-btn">⚡ Fetch</button>
-          <span id="fetch-status" class="fetch-status"></span>
+      <div id="prox-overview-section">
+        <div class="section-head">
+          <div>
+            <div class="section-title">GLOBAL STATISTICS (PKT)</div>
+            <div class="section-sub" id="date-range-sub">— · Users: 0</div>
+          </div>
+          <div class="head-controls">
+            <button class="btn primary" id="fetch-btn">⚡ Fetch</button>
+            <span id="fetch-status" class="fetch-status"></span>
+          </div>
+        </div>
+        <div id="locked-panel" class="panel" style="padding:64px 20px;text-align:center;">
+          <div style="width:44px;height:44px;margin:0 auto 16px;border-radius:12px;background:rgba(180,120,255,.15);border:1px solid rgba(180,120,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;">🔒</div>
+          <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.1em;color:var(--text-dim);font-weight:600;margin-bottom:6px;">NO DATA</div>
+          <div style="font-size:12.5px;color:var(--text-dim);">Click Load Data to view stats</div>
+        </div>
+        <div class="stat-grid" id="stat-grid" style="display:none;">
+          <div class="stat-card"><div class="stat-label">CREATED</div><div class="stat-value" id="s-created">0</div></div>
+          <div class="stat-card completed"><div class="stat-label">COMPLETED</div><div class="stat-value" id="s-completed">0</div></div>
+          <div class="stat-card failed"><div class="stat-label">FAILED</div><div class="stat-value" id="s-failed">0</div></div>
+          <div class="stat-card pending"><div class="stat-label">PENDING</div><div class="stat-value" id="s-pending">0</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">PERFORMANCE BREAKDOWN</div>
+          <table>
+            <thead><tr><th>USER</th><th class="num">CREATED</th><th class="num">DONE</th><th class="num">FAIL</th><th class="num">CNCL</th><th class="num">PEND</th></tr></thead>
+            <tbody id="user-rows"></tbody>
+          </table>
         </div>
       </div>
 
-      <div id="locked-panel" class="panel" style="padding:64px 20px;text-align:center;">
-        <div style="width:44px;height:44px;margin:0 auto 16px;border-radius:12px;background:var(--panel-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;">🔒</div>
-        <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.1em;color:var(--text-dim);font-weight:600;margin-bottom:6px;">NO DATA</div>
-        <div style="font-size:12.5px;color:var(--text-dim);">Enter your access key and click Load Data to view stats</div>
-      </div>
-
-      <div class="stat-grid" id="stat-grid" style="display:none;">
-        <div class="stat-card"><div class="stat-label">CREATED</div><div class="stat-value" id="s-created">0</div></div>
-        <div class="stat-card completed"><div class="stat-label">COMPLETED</div><div class="stat-value" id="s-completed">0</div></div>
-        <div class="stat-card failed"><div class="stat-label">FAILED</div><div class="stat-value" id="s-failed">0</div></div>
-        <div class="stat-card pending"><div class="stat-label">PENDING</div><div class="stat-value" id="s-pending">0</div></div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <span>PERFORMANCE BREAKDOWN</span>
-          <div style="display:flex;gap:8px;align-items:center;"><span style="font-size:10px;color:var(--text-dim);">Manage users from Users → email</span></div>
-        </div>
-        <table><thead><tr><th>USER</th><th class="num">CREATED</th><th class="num">DONE</th><th class="num">FAIL</th><th class="num">CNCL</th><th class="num">PEND</th></tr></thead><tbody id="user-rows"></tbody></table>
-      </div>
     </div>
   </div>
+</div>
 
-<button type="button" id="prox-public-back" class="btn prox-public-back">← Back to admin</button>
 <div id="prox-public" class="prox-public">
   <div class="prox-public-wrap">
     <div class="prox-public-brand">PRO<span>X</span></div>
     <div class="panel" style="padding:22px;">
-      <div class="prox-bind-title">SELECT WORKER</div>
+      <div style="font-family:var(--font-display);font-size:14px;font-weight:700;margin-bottom:16px;">SELECT WORKER</div>
       <div class="prox-bind-label" style="margin-top:0;">YOUR API KEY (optional)</div>
-      <input id="prox-pub-key" class="prox-input mono" type="text" placeholder="Paste your API key" autocomplete="off">
-      <div id="prox-pub-select-wrap"><div class="prox-bind-label">WORKER</div><select id="prox-pub-select" class="prox-input" style="cursor:pointer;"></select></div>
+      <input id="prox-pub-key" class="prox-input mono" type="text" placeholder="Paste your API key">
+      <div id="prox-pub-select-wrap">
+        <div class="prox-bind-label">WORKER</div>
+        <select id="prox-pub-select" class="prox-input"></select>
+      </div>
       <div id="prox-pub-info" class="prox-pub-note"></div>
       <div id="prox-pub-detail"></div>
-    </div>
-  </div>
-</div>
-
-<div id="prox-accept" class="prox-public">
-  <div class="prox-public-wrap">
-    <div class="prox-public-brand">PRO<span>X</span></div>
-    <div class="panel" style="padding:26px;text-align:center;"><div id="prox-accept-body"></div></div>
-  </div>
-</div>
-
-<div id="prox-invite-modal" class="prox-modal-backdrop">
-  <div class="prox-modal">
-    <div class="prox-modal-head">
-      <div class="prox-modal-title">✉ INVITE EMAIL — MANUAL SEND</div>
-      <button type="button" class="prox-modal-close" id="prox-invite-modal-close">✕</button>
-    </div>
-    <div class="prox-modal-body">
-      <div class="prox-modal-note">
-        <b>Kaise bhejein (3 steps):</b>
-        <ol>
-          <li>Upar wala <b>Email</b> copy karo aur apne Gmail mein <b>To</b> mein paste karo</li>
-          <li>Neeche <b>"Copy Full Email"</b> button dabao → Gmail body mein paste karo</li>
-          <li><b>Send</b> dabao ✅</li>
-        </ol>
-      </div>
-      <div class="prox-modal-label">📧 TO (recipient)</div>
-      <textarea id="prox-invite-to" class="prox-modal-textarea" rows="1" readonly></textarea>
-      <div class="prox-modal-label">📌 SUBJECT</div>
-      <textarea id="prox-invite-subject" class="prox-modal-textarea" rows="1" readonly></textarea>
-      <div class="prox-modal-label">🔗 INVITE LINK</div>
-      <textarea id="prox-invite-link" class="prox-modal-textarea prox-modal-link" rows="2" readonly></textarea>
-      <div class="prox-modal-actions"><button type="button" class="btn" id="prox-copy-link">📋 Copy Invite Link</button><span id="prox-copy-link-msg" class="prox-modal-msg"></span></div>
-      <div class="prox-modal-label">✍️ FULL EMAIL BODY</div>
-      <textarea id="prox-invite-body" class="prox-modal-textarea prox-modal-body-box" rows="8" readonly></textarea>
-      <div class="prox-modal-actions">
-        <button type="button" class="btn primary" id="prox-copy-full">📋 Copy Full Email</button>
-        <button type="button" class="btn" id="prox-open-gmail">↗ Open Gmail Compose</button>
-        <span id="prox-copy-full-msg" class="prox-modal-msg"></span>
-      </div>
     </div>
   </div>
 </div>
@@ -491,14 +607,43 @@
   const tbody = document.getElementById('user-rows');
 
   function escapeUserText(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
-  function b64urlEncode(str){try{return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}catch(e){return '';}}
-  function b64urlDecode(str){try{let s=str.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(escape(atob(s)));}catch(e){return null;}}
 
+  /* ========== LOCK SCREEN — ALWAYS ASKS ON PAGE LOAD ========== */
+  const PROX_PASS = '\\proxpenl';
+  const lockScreen = document.getElementById('prox-lock-screen');
+  const lockBox = document.getElementById('prox-lock-box');
+  const lockInput = document.getElementById('prox-lock-input');
+  const lockBtn = document.getElementById('prox-lock-btn');
+  const lockMsg = document.getElementById('prox-lock-msg');
+
+  function unlockApp(){
+    document.body.classList.add('prox-unlocked');
+    lockScreen.classList.remove('show');
+    setTimeout(()=>{try{updateSummary();}catch(e){}},100);
+  }
+  function attemptUnlock(){
+    const val=(lockInput.value||'').trim();
+    if(!val){lockMsg.textContent='Access key daalo';lockBox.classList.add('shake');setTimeout(()=>lockBox.classList.remove('shake'),400);return;}
+    if(val===PROX_PASS){
+      lockMsg.textContent='';
+      unlockApp();
+    } else {
+      lockMsg.textContent='✕ Galat access key';
+      lockInput.value='';
+      lockBox.classList.add('shake');
+      setTimeout(()=>lockBox.classList.remove('shake'),400);
+      lockInput.focus();
+    }
+  }
+  lockBtn.addEventListener('click',attemptUnlock);
+  lockInput.addEventListener('keydown',e=>{if(e.key==='Enter')attemptUnlock();});
+
+  /* ========== OVERVIEW ========== */
   function syncOverviewUsers(){users.length=0;managedUsers.forEach(u=>users.push([u.email,u.id,0]));}
-
   function renderRows(){
+    if(!tbody)return;
     syncOverviewUsers();tbody.innerHTML='';
-    if(users.length===0){const tr=document.createElement('tr');tr.innerHTML=`<td colspan="6" style="text-align:center;color:var(--text-dim);padding:24px;">No users added yet</td>`;tbody.appendChild(tr);return;}
+    if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:24px;">No users added yet</td></tr>';return;}
     users.forEach(([email,id,pages])=>{const tr=document.createElement('tr');tr.innerHTML=`<td><div class="user-name">${escapeUserText(email)}</div><div class="user-id">${escapeUserText(id)}</div></td><td class="num">${pages}</td><td class="num done">${pages}</td><td class="num fail">0</td><td class="num cncl">0</td><td class="num">0</td>`;tbody.appendChild(tr);});
   }
 
@@ -514,6 +659,11 @@
     if(all)all.checked=checks.length>0&&selected===checks.length;
   }
 
+  function approvalLabelFor(user){
+    const s = (user.approval || 'pending').toLowerCase();
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
   function renderManagedUsers(){
     const grid=document.getElementById('prox-users-grid');
     const empty=document.getElementById('prox-users-empty');
@@ -524,15 +674,33 @@
     if(count)count.textContent=`(${managedUsers.length})`;
     if(typeof syncUserWorkers==='function')syncUserWorkers();
     managedUsers.forEach((user,index)=>{
-      const userWorker=(typeof proxWorkers!=='undefined')?proxWorkers.find(w=>w.userId===user.id):null;
-      const isPublic=!!(userWorker&&userWorker.public);
+      if(!user.approval) user.approval = 'pending';
       const card=document.createElement('div');
       card.className='prox-user-card';
-      card.innerHTML=`<div class="prox-user-top"><input class="prox-managed-user-check" type="checkbox" data-index="${index}"><div class="prox-user-email-text">${escapeUserText(user.email)}</div><div class="prox-user-status">PENDING</div></div><div class="prox-user-id">user_${escapeUserText(user.id)}</div><div class="prox-user-key">API Key: ${escapeUserText(user.apiKey)}</div><div class="prox-user-stats">Pend: 0 &nbsp; <span class="done">Done: 0</span> &nbsp; <span class="fail">Fail: 0</span></div><div class="prox-user-vis"><span class="prox-vis-pill ${isPublic?'public':'private'}">${isPublic?'PUBLIC':'PRIVATE'}</span><button type="button" class="btn prox-user-vis-toggle" data-index="${index}">${isPublic?'Make Private':'Make Public'}</button></div><button type="button" class="btn prox-user-delete" data-index="${index}">Delete</button>`;
+      card.dataset.index=index;
+      card.innerHTML=`
+        <div class="prox-user-top">
+          <input class="prox-managed-user-check" type="checkbox" data-index="${index}">
+          <div class="prox-user-email-text">${escapeUserText(user.email)}</div>
+          <div class="prox-user-status ${user.approval}">${approvalLabelFor(user).toUpperCase()}</div>
+        </div>
+        <div class="prox-user-id">user_${escapeUserText(user.id)}</div>
+        <div class="prox-user-key">API Key: ${escapeUserText(user.apiKey)}</div>
+        <div class="prox-user-stats">Pend: 0 &nbsp; <span class="done">Done: 0</span> &nbsp; <span class="fail">Fail: 0</span></div>
+      `;
       grid.appendChild(card);
     });
-    grid.querySelectorAll('.prox-managed-user-check').forEach(cb=>cb.addEventListener('change',updateUserSelection));
-    grid.querySelectorAll('.prox-user-delete').forEach(btn=>{btn.addEventListener('click',()=>{managedUsers.splice(Number(btn.dataset.index),1);saveManagedUsers();renderManagedUsers();renderRows();updateSummary();showUserMessage('User deleted.');});});
+    grid.querySelectorAll('.prox-managed-user-check').forEach(cb=>{
+      cb.addEventListener('click',e=>e.stopPropagation());
+      cb.addEventListener('change',updateUserSelection);
+    });
+    grid.querySelectorAll('.prox-user-card').forEach(card=>{
+      card.addEventListener('click',e=>{
+        if(e.target.closest('input'))return;
+        const idx=Number(card.dataset.index);
+        openUserDetail(idx);
+      });
+    });
     updateUserSelection();
   }
 
@@ -541,24 +709,134 @@
     const email=input.value.trim().toLowerCase();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showUserMessage('Enter a valid email.');input.focus();return;}
     if(managedUsers.some(user=>user.email===email)){showUserMessage('This email is already added.');input.focus();return;}
-    managedUsers.push({email,id:Math.random().toString(16).slice(2,14),apiKey:'key_'+Math.random().toString(16).slice(2,34),created:new Date().toLocaleString()});
+    managedUsers.push({email,id:Math.random().toString(16).slice(2,14),apiKey:'key_'+Math.random().toString(16).slice(2,34),created:new Date().toLocaleString(),approval:'pending'});
     saveManagedUsers();input.value='';renderManagedUsers();renderRows();updateSummary();showUserMessage('User created.');input.focus();
   }
 
   function deleteSelectedManagedUsers(){
     const selected=[...document.querySelectorAll('.prox-managed-user-check:checked')].map(cb=>Number(cb.dataset.index));
     if(!selected.length){showUserMessage('Select user(s) first.');return;}
-    managedUsers=managedUsers.filter((_,index)=>!selected.includes(index));
+    managedUsers=managedUsers.filter((_,i)=>!selected.includes(i));
     saveManagedUsers();renderManagedUsers();renderRows();updateSummary();showUserMessage(`${selected.length} user(s) deleted.`);
   }
 
+  /* ========== USER DETAIL ========== */
+  let activeUserIndex = -1;
+  function openUserDetail(index){
+    const user = managedUsers[index];
+    if(!user) return;
+    activeUserIndex = index;
+    if(!user.approval) user.approval = 'pending';
+
+    document.getElementById('prox-ud-email').textContent = user.email;
+    document.getElementById('prox-ud-id').textContent = 'user_' + user.id;
+    document.getElementById('prox-ud-key').textContent = 'API Key: ' + user.apiKey;
+    document.getElementById('prox-ud-pend').textContent = '0';
+    document.getElementById('prox-ud-done').textContent = '0';
+    document.getElementById('prox-ud-fail').textContent = '0';
+
+    const pill = document.getElementById('prox-ud-approval-pill');
+    pill.textContent = approvalLabelFor(user).toUpperCase();
+    pill.className = 'prox-ud-approval-pill ' + user.approval;
+
+    document.getElementById('prox-ud-approval-select').value = user.approval;
+
+    document.getElementById('prox-users-grid-view').style.display = 'none';
+    document.getElementById('prox-user-detail').classList.add('show');
+
+    document.getElementById('prox-ud-page-label').textContent = 'Page 1 • Returned 0 • Scanned 0';
+    document.getElementById('prox-ud-st-returned').textContent = '0';
+    document.getElementById('prox-ud-st-active').textContent = '0';
+    document.getElementById('prox-ud-st-done').textContent = '0';
+    document.getElementById('prox-ud-st-fail').textContent = '0';
+
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+  function closeUserDetail(){
+    activeUserIndex = -1;
+    document.getElementById('prox-user-detail').classList.remove('show');
+    document.getElementById('prox-users-grid-view').style.display = 'block';
+  }
+
+  document.getElementById('prox-user-back').addEventListener('click', closeUserDetail);
+
+  document.getElementById('prox-ud-approval-btn').addEventListener('click', ()=>{
+    if(activeUserIndex < 0) return;
+    const val = document.getElementById('prox-ud-approval-select').value;
+    const user = managedUsers[activeUserIndex];
+    if(!user) return;
+    user.approval = val;
+    saveManagedUsers();
+    const pill = document.getElementById('prox-ud-approval-pill');
+    pill.textContent = approvalLabelFor(user).toUpperCase();
+    pill.className = 'prox-ud-approval-pill ' + user.approval;
+
+    const card = document.querySelector(`.prox-user-card[data-index="${activeUserIndex}"]`);
+    if(card){
+      const statusEl = card.querySelector('.prox-user-status');
+      statusEl.textContent = approvalLabelFor(user).toUpperCase();
+      statusEl.className = 'prox-user-status ' + user.approval;
+    }
+    showUserMessage('Approval set to ' + approvalLabelFor(user) + '.');
+  });
+
+  document.getElementById('prox-ud-delete-btn').addEventListener('click', ()=>{
+    if(activeUserIndex < 0) return;
+    const user = managedUsers[activeUserIndex];
+    if(!user) return;
+    if(!confirm('Delete user ' + user.email + '?')) return;
+    managedUsers.splice(activeUserIndex, 1);
+    saveManagedUsers();
+    closeUserDetail();
+    renderManagedUsers();
+    renderRows();
+    updateSummary();
+    showUserMessage('User deleted.');
+  });
+
+  document.getElementById('prox-ud-load-btn').addEventListener('click', ()=>{
+    const btn = document.getElementById('prox-ud-load-btn');
+    const original = btn.textContent;
+    btn.textContent = 'Loading...';
+    btn.disabled = true;
+    setTimeout(()=>{
+      btn.textContent = original;
+      btn.disabled = false;
+      const r = Math.floor(Math.random()*20);
+      const d = Math.floor(Math.random()*10);
+      const f = Math.floor(Math.random()*5);
+      document.getElementById('prox-ud-st-returned').textContent = r;
+      document.getElementById('prox-ud-st-active').textContent = Math.max(0, r - d - f);
+      document.getElementById('prox-ud-st-done').textContent = d;
+      document.getElementById('prox-ud-st-fail').textContent = f;
+      document.getElementById('prox-ud-page-label').textContent = `Page 1 • Returned ${r} • Scanned ${r}`;
+      showUserMessage('Jobs loaded.');
+    }, 700);
+  });
+
+  document.getElementById('prox-ud-refresh-btn').addEventListener('click', ()=>{document.getElementById('prox-ud-load-btn').click();});
+  document.getElementById('prox-ud-download-btn').addEventListener('click', ()=>{showUserMessage('Download ready (demo).');});
+  document.getElementById('prox-ud-prev').addEventListener('click', ()=>{showUserMessage('Already on page 1');});
+  document.getElementById('prox-ud-next').addEventListener('click', ()=>{showUserMessage('No more pages');});
+  document.getElementById('prox-ud-today').addEventListener('click', ()=>{
+    document.getElementById('prox-ud-today').classList.add('on');
+    document.getElementById('prox-ud-week').classList.remove('on');
+  });
+  document.getElementById('prox-ud-week').addEventListener('click', ()=>{
+    document.getElementById('prox-ud-week').classList.add('on');
+    document.getElementById('prox-ud-today').classList.remove('on');
+  });
+
+  /* ========== PAGE NAV ========== */
   function openUsersPage(){
     const content=document.querySelector('.content');if(!content)return;
     const statGrid=document.getElementById('stat-grid');if(statGrid)statGrid.style.display='none';
     document.getElementById('prox-users-page').style.display='block';
     [...content.children].forEach(child=>{if(child.id!=='prox-users-page')child.style.display='none';});
-    document.querySelectorAll('.nav-item').forEach(item=>item.classList.remove('active'));
-    const usersNav=document.getElementById('prox-users-nav');if(usersNav)usersNav.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+    const n=document.getElementById('prox-users-nav');if(n)n.classList.add('active');
+    closeUserDetail();
     renderManagedUsers();
   }
   window.openUsersPage=openUsersPage;
@@ -569,8 +847,8 @@
     [...content.children].forEach(child=>{if(child.id!=='prox-users-page')child.style.display='';});
     document.getElementById('locked-panel').style.display=dashboardUnlocked?'none':'';
     document.getElementById('stat-grid').style.display=dashboardUnlocked?'grid':'none';
-    document.querySelectorAll('.nav-item').forEach(item=>item.classList.remove('active'));
-    const overviewNav=document.getElementById('prox-overview-nav');if(overviewNav)overviewNav.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+    const n=document.getElementById('prox-overview-nav');if(n)n.classList.add('active');
   }
   window.openOverviewPage=openOverviewPage;
 
@@ -580,69 +858,28 @@
   document.getElementById('prox-users-clear-selection').addEventListener('click',()=>{document.querySelectorAll('.prox-managed-user-check').forEach(cb=>cb.checked=false);document.getElementById('prox-users-select-all').checked=false;updateUserSelection();showUserMessage('Selection cleared.');});
   document.getElementById('prox-users-select-all').addEventListener('change',e=>{document.querySelectorAll('.prox-managed-user-check').forEach(cb=>cb.checked=e.target.checked);updateUserSelection();});
 
-  const proxUsersNav=document.getElementById('prox-users-nav');
-  if(proxUsersNav){proxUsersNav.onclick=function(e){e.preventDefault();openUsersPage();return false;};}
-  const proxOverviewNav=document.getElementById('prox-overview-nav');
-  if(proxOverviewNav){proxOverviewNav.onclick=function(e){e.preventDefault();openOverviewPage();return false;};}
+  document.getElementById('prox-users-nav').onclick=function(e){e.preventDefault();openUsersPage();return false;};
+  document.getElementById('prox-overview-nav').onclick=function(e){e.preventDefault();openOverviewPage();return false;};
 
-  let consoleUser=null;let consoleJobs=[];let consolePage=1;
-  function renderConsole(){
-    const hint=document.getElementById('prox-console-hint');
-    if(consoleUser){hint.className='prox-console-hint has-user';hint.innerHTML=`<div class="who">${escapeUserText(consoleUser.email)}</div><div class="whoid">user_${escapeUserText(consoleUser.id)}</div>`;}
-    else{hint.className='prox-console-hint';hint.innerHTML='👆 Select user from <b>Users</b> tab';}
-    const status=document.getElementById('prox-status-filter').value;
-    const limit=Number(document.getElementById('prox-limit-filter').value);
-    const rows=consoleJobs.filter(j=>status==='all'||j.status===status).slice(0,limit);
-    const body=document.getElementById('prox-jobs-body');
-    if(!rows.length){body.innerHTML='<tr><td colspan="11" class="prox-jobs-empty">No jobs loaded</td></tr>';}
-    else{body.innerHTML=rows.map(j=>`<tr><td>${escapeUserText(j.id)}</td><td>${escapeUserText(j.action)}</td><td>${escapeUserText(j.product)}</td><td>${escapeUserText(j.pageId)}</td><td>${escapeUserText(j.pageLink)}</td><td>${escapeUserText(j.pageName)}</td><td>${escapeUserText(j.payoutId)}</td><td>${escapeUserText(j.status)}</td><td>${escapeUserText(j.result)}</td><td>${escapeUserText(j.time)}</td><td></td></tr>`).join('');}
-    document.getElementById('prox-page-label').textContent='Page '+consolePage;
-  }
-
+  /* CONSOLE */
   function openConsolePage(){
     const content=document.querySelector('.content');if(!content)return;
     [...content.children].forEach(child=>{if(child.id!=='prox-console-page')child.style.display='none';});
     document.getElementById('prox-console-page').style.display='grid';
-    document.querySelectorAll('.nav-item').forEach(item=>item.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
     document.getElementById('prox-console-nav').classList.add('active');
-    renderConsole();
   }
-  window.openConsolePage=openConsolePage;
   document.getElementById('prox-console-nav').onclick=function(e){e.preventDefault();openConsolePage();return false;};
-  document.getElementById('prox-status-filter').addEventListener('change',()=>{consolePage=1;renderConsole();});
-  document.getElementById('prox-limit-filter').addEventListener('change',()=>{consolePage=1;renderConsole();});
-  document.getElementById('prox-page-prev').addEventListener('click',()=>{if(consolePage>1){consolePage--;renderConsole();}});
-  document.getElementById('prox-page-next').addEventListener('click',()=>{consolePage++;renderConsole();});
-  ['today','week'].forEach(k=>{document.getElementById('prox-range-'+k).addEventListener('click',()=>{document.getElementById('prox-range-today').classList.toggle('on',k==='today');document.getElementById('prox-range-week').classList.toggle('on',k==='week');consolePage=1;renderConsole();});});
 
-  document.getElementById('prox-users-grid').addEventListener('click',e=>{
-    const btn=e.target.closest('.prox-user-vis-toggle');if(!btn)return;
-    const user=managedUsers[Number(btn.dataset.index)];if(!user)return;
-    syncUserWorkers();
-    const w=proxWorkers.find(x=>x.userId===user.id);if(!w)return;
-    w.public=!w.public;saveWorkers();
-    const pill=btn.parentElement.querySelector('.prox-vis-pill');
-    pill.className='prox-vis-pill '+(w.public?'public':'private');
-    pill.textContent=w.public?'PUBLIC':'PRIVATE';
-    btn.textContent=w.public?'Make Private':'Make Public';
-  });
-
-  document.getElementById('prox-users-grid').addEventListener('click',e=>{
-    if(e.target.closest('input, button'))return;
-    const card=e.target.closest('.prox-user-card');if(!card)return;
-    const idx=Number(card.querySelector('.prox-managed-user-check').dataset.index);
-    consoleUser=managedUsers[idx]||null;
-    openConsolePage();
-  });
-
+  /* BINDINGS */
   const PROX_WORKERS_KEY='prox_workers_v1';
   const PROX_BINDINGS_KEY='prox_bindings_v1';
   let proxWorkers=[];let proxBindings={};
   try{proxWorkers=JSON.parse(localStorage.getItem(PROX_WORKERS_KEY)||'[]');}catch(e){proxWorkers=[];}
   try{proxBindings=JSON.parse(localStorage.getItem(PROX_BINDINGS_KEY)||'{}');}catch(e){proxBindings={};}
-  function saveWorkers(){try{localStorage.setItem(PROX_WORKERS_KEY,JSON.stringify(proxWorkers));}catch(e){}}
-  function saveBindings(){try{localStorage.setItem(PROX_BINDINGS_KEY,JSON.stringify(proxBindings));}catch(e){}}
-  function bindMsg(text,kind){const el=document.getElementById('prox-bind-msg');el.textContent=text||'';el.className='prox-bind-msg'+(kind?' '+kind:'');}
+  function saveWorkers(){localStorage.setItem(PROX_WORKERS_KEY,JSON.stringify(proxWorkers));}
+  function saveBindings(){localStorage.setItem(PROX_BINDINGS_KEY,JSON.stringify(proxBindings));}
+  function bindMsg(t,k){const el=document.getElementById('prox-bind-msg');el.textContent=t||'';el.className='prox-bind-msg'+(k?' '+k:'');}
   function maskKey(k){return k.length>14?k.slice(0,10)+'…'+k.slice(-4):k;}
 
   function syncUserWorkers(){
@@ -658,10 +895,10 @@
     document.getElementById('prox-key-list').innerHTML=managedUsers.map(u=>`<option value="${escapeUserText(u.apiKey)}">${escapeUserText(u.email)}</option>`).join('');
     const sel=document.getElementById('prox-bind-worker');const prev=sel.value;
     if(!proxWorkers.length){sel.innerHTML='<option value="">No workers added yet</option>';}
-    else{sel.innerHTML=proxWorkers.map(w=>`<option value="${escapeUserText(w.id)}">${escapeUserText(w.id)} — ${escapeUserText(w.label)} (${w.public?'public':'private'})</option>`).join('');if(proxWorkers.some(w=>w.id===prev))sel.value=prev;}
+    else{sel.innerHTML=proxWorkers.map(w=>`<option value="${escapeUserText(w.id)}">${escapeUserText(w.id)} — ${escapeUserText(w.label)}</option>`).join('');if(proxWorkers.some(w=>w.id===prev))sel.value=prev;}
     const body=document.getElementById('prox-workers-body');
-    if(!proxWorkers.length){body.innerHTML='<tr><td colspan="5" class="prox-jobs-empty">No workers added yet</td></tr>';}
-    else{body.innerHTML=proxWorkers.map((w,i)=>`<tr><td class="prox-worker-id">${escapeUserText(w.id)}</td><td>${escapeUserText(w.label)}</td><td style="color:var(--text-dim);">—</td><td><span class="prox-vis-pill ${w.public?'public':'private'}">${w.public?'PUBLIC':'PRIVATE'}</span></td><td><div class="prox-worker-btns"><button type="button" class="btn prox-vis-toggle" data-index="${i}">${w.public?'Make Private':'Make Public'}</button>${w.userId?'':`<button type="button" class="btn prox-worker-remove" data-index="${i}" title="Remove worker">✕</button>`}</div></td></tr>`).join('');}
+    if(!proxWorkers.length){body.innerHTML='<tr><td colspan="4" class="prox-jobs-empty">No workers added yet</td></tr>';}
+    else{body.innerHTML=proxWorkers.map((w,i)=>`<tr><td class="prox-worker-id">${escapeUserText(w.id)}</td><td>${escapeUserText(w.label)}</td><td><span class="prox-vis-pill ${w.public?'public':'private'}">${w.public?'PUBLIC':'PRIVATE'}</span></td><td><div class="prox-worker-btns"><button type="button" class="btn prox-vis-toggle" data-index="${i}">${w.public?'Make Private':'Make Public'}</button></div></td></tr>`).join('');}
     const list=document.getElementById('prox-bound-list');
     const keys=Object.keys(proxBindings);
     if(!keys.length){list.innerHTML='<div class="prox-bound-empty">No API keys bound yet.</div>';}
@@ -671,531 +908,149 @@
   document.getElementById('prox-worker-add').addEventListener('click',()=>{
     const input=document.getElementById('prox-worker-label');
     const label=input.value.trim();
-    if(!label){input.focus();bindMsg('Enter the worker\'s user first.','err');return;}
+    if(!label){input.focus();bindMsg('Enter worker name','err');return;}
     const id='worker_'+Math.random().toString(36).slice(2,12);
     proxWorkers.push({id,label,public:false});
     saveWorkers();input.value='';renderBindings();
-    document.getElementById('prox-bind-worker').value=id;
-    bindMsg('Worker added: '+id,'ok');
+    bindMsg('Worker added','ok');
   });
-  document.getElementById('prox-worker-label').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('prox-worker-add').click();});
 
   document.getElementById('prox-bind-btn').addEventListener('click',()=>{
     const key=document.getElementById('prox-bind-key').value.trim();
-    const workerId=document.getElementById('prox-bind-worker').value;
-    if(!key){bindMsg('Paste an API key first.','err');return;}
-    if(!workerId){bindMsg('Add / select a worker first.','err');return;}
-    proxBindings[key]=workerId;saveBindings();renderBindings();
-    const w=proxWorkers.find(x=>x.id===workerId);
-    bindMsg('Bound to '+(w?w.label:workerId)+'.','ok');
+    const wid=document.getElementById('prox-bind-worker').value;
+    if(!key){bindMsg('Paste API key','err');return;}
+    if(!wid){bindMsg('Select worker','err');return;}
+    proxBindings[key]=wid;saveBindings();renderBindings();
+    bindMsg('Bound','ok');
   });
 
   document.getElementById('prox-unbind-btn').addEventListener('click',()=>{
     const key=document.getElementById('prox-bind-key').value.trim();
-    if(!key){bindMsg('Paste the API key you want to unbind.','err');return;}
-    if(!(key in proxBindings)){bindMsg('That API key is not bound.','err');return;}
-    delete proxBindings[key];saveBindings();renderBindings();bindMsg('API key unbound.','ok');
+    if(!(key in proxBindings)){bindMsg('Not bound','err');return;}
+    delete proxBindings[key];saveBindings();renderBindings();bindMsg('Unbound','ok');
   });
 
   document.getElementById('prox-workers-body').addEventListener('click',e=>{
-    const tog=e.target.closest('.prox-vis-toggle');
-    const rem=e.target.closest('.prox-worker-remove');
-    if(tog){const w=proxWorkers[Number(tog.dataset.index)];if(w){w.public=!w.public;saveWorkers();renderBindings();}}
-    else if(rem){const w=proxWorkers[Number(rem.dataset.index)];if(!w)return;proxWorkers.splice(Number(rem.dataset.index),1);Object.keys(proxBindings).forEach(k=>{if(proxBindings[k]===w.id)delete proxBindings[k];});saveWorkers();saveBindings();renderBindings();bindMsg('Worker removed.','ok');}
+    const t=e.target.closest('.prox-vis-toggle');if(!t)return;
+    const w=proxWorkers[Number(t.dataset.index)];if(w){w.public=!w.public;saveWorkers();renderBindings();}
   });
 
   document.getElementById('prox-bound-list').addEventListener('click',e=>{
-    const btn=e.target.closest('.prox-bound-unbind');if(!btn)return;
-    delete proxBindings[btn.dataset.key];saveBindings();renderBindings();bindMsg('API key unbound.','ok');
+    const b=e.target.closest('.prox-bound-unbind');if(!b)return;
+    delete proxBindings[b.dataset.key];saveBindings();renderBindings();
   });
 
   function openBindingsPage(){
     const content=document.querySelector('.content');if(!content)return;
     [...content.children].forEach(child=>{if(child.id!=='prox-bindings-page')child.style.display='none';});
     document.getElementById('prox-bindings-page').style.display='grid';
-    document.querySelectorAll('.nav-item').forEach(item=>item.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
     document.getElementById('prox-bindings-nav').classList.add('active');
     bindMsg('');renderBindings();
   }
-  window.openBindingsPage=openBindingsPage;
   document.getElementById('prox-bindings-nav').onclick=function(e){e.preventDefault();openBindingsPage();return false;};
 
-  function proxRead(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v==null?fallback:v;}catch(e){return fallback;}}
-
-  function renderPublic(){
-    const workers=proxRead(PROX_WORKERS_KEY,[]);const bindings=proxRead(PROX_BINDINGS_KEY,{});const users=proxRead(PROX_USERS_KEY,[]);
-    const key=document.getElementById('prox-pub-key').value.trim();
-    const sel=document.getElementById('prox-pub-select');
-    const selWrap=document.getElementById('prox-pub-select-wrap');
-    const info=document.getElementById('prox-pub-info');
-    const detail=document.getElementById('prox-pub-detail');
-    const boundWorker=key&&bindings[key]?workers.find(w=>w.id===bindings[key]):null;
-    let shown=null;
-    if(boundWorker){selWrap.style.display='none';info.textContent='Your API key is bound to a worker — it is selected automatically.';shown=boundWorker;}
-    else{selWrap.style.display='';const pub=workers.filter(w=>w.public);const prev=sel.value;sel.innerHTML=pub.length?pub.map(w=>`<option value="${escapeUserText(w.id)}">${escapeUserText(w.label)}</option>`).join(''):'<option value="">No public workers available</option>';if(pub.some(w=>w.id===prev))sel.value=prev;info.textContent=pub.length?'Only public workers are listed here.':'The admin has not made any worker public yet.';shown=pub.find(w=>w.id===sel.value)||null;}
-    if(!shown){detail.innerHTML='';return;}
-    const u=shown.userId?users.find(x=>x.id===shown.userId):null;
-    detail.innerHTML=`<div class="prox-pub-detail"><div class="name">${escapeUserText(shown.label)}<span class="prox-vis-pill ${shown.public?'public':'private'} prox-pub-badge">${shown.public?'PUBLIC':'PRIVATE'}</span></div><div class="wid">${escapeUserText(shown.id)}</div>${u?`<div class="prox-pub-stats"><span>Pend: 0</span><span class="done">Done: 0</span><span class="fail">Fail: 0</span></div>`:''}</div>`;
-  }
-
-  function openPublicView(withBack){document.getElementById('prox-public').classList.add('show');document.getElementById('prox-public-back').classList.toggle('show',!!withBack);renderPublic();}
-  function closePublicView(){document.getElementById('prox-public').classList.remove('show');document.getElementById('prox-public-back').classList.remove('show');}
-  document.getElementById('prox-pub-key').addEventListener('input',renderPublic);
-  document.getElementById('prox-pub-select').addEventListener('change',renderPublic);
-  document.getElementById('prox-public-back').addEventListener('click',closePublicView);
-  document.getElementById('prox-public-preview').addEventListener('click',()=>openPublicView(true));
-  document.getElementById('prox-public-newtab').addEventListener('click',()=>{const url=location.href.split('#')[0]+'#public';const w=window.open(url,'_blank');if(!w)openPublicView(true);});
-  window.addEventListener('storage',()=>{if(document.getElementById('prox-public').classList.contains('show'))renderPublic();});
-
+  /* SETTINGS */
   const PROX_CONFIG_KEY='prox_config_v1';
-  const PROX_MAIL_KEY='prox_mail_v1';
-  function loadMail(){return Object.assign({serviceId:'',templateId:'',publicKey:''},proxRead(PROX_MAIL_KEY,{}));}
-  function mailConfigured(m){return !!(m.serviceId&&m.templateId&&m.publicKey);}
-
-  // ========== EMAIL METHOD 1: EmailJS (if configured) ==========
-  async function sendViaEmailJS(m,to,subject,message){
-    try{
-      const res=await fetch('https://api.emailjs.com/api/v1.0/email/send',{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({service_id:m.serviceId,template_id:m.templateId,user_id:m.publicKey,template_params:{to_email:to,email:to,user_email:to,subject,message,from_name:'Pro X Panel',app_name:'Pro X Panel',reply_to:to}})
-      });
-      const txt=await res.text();
-      if(res.ok)return{ok:true,info:txt||'OK'};
-      return{ok:false,error:(txt||('HTTP '+res.status)).trim()};
-    }catch(err){return{ok:false,error:err.message||'network error'};}
+  const PROX_ADMINS_KEY='prox_admins_v1';
+  function proxRead(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v==null?fallback:v;}catch(e){return fallback;}}
+  function loadAdmins(){return proxRead(PROX_ADMINS_KEY,[]);}
+  function saveAdmins(l){localStorage.setItem(PROX_ADMINS_KEY,JSON.stringify(l));}
+  function adminMsg(t,k){const el=document.getElementById('prox-admin-msg');el.textContent=t||'';el.className='prox-set-msg'+(k?' '+k:'');}
+  function renderAdmins(){
+    const list=loadAdmins();
+    const el=document.getElementById('prox-admin-list');
+    el.innerHTML=list.length?list.map((a,i)=>`<div class="prox-bound-row"><div><div><span style="color:var(--text);">${escapeUserText(a.email)}</span> <span class="prox-vis-pill private">INVITED</span></div><div class="prox-admin-meta">${escapeUserText(a.invited||'')}</div></div><button type="button" class="btn prox-admin-remove" data-index="${i}" style="padding:5px 10px;font-size:11px;">Remove</button></div>`).join(''):'<div class="prox-bound-empty">No admins added yet.</div>';
   }
-
-  // ========== EMAIL METHOD 2: FormSubmit.co (NO SIGNUP — automatic!) ==========
-  // Pehli baar recipient ko ek activation email jayegi — woh ek baar "Activate" click karega.
-  // Uske baad har invite automatically deliver hoga.
-  async function sendViaFormSubmit(to,subject,message){
-    try{
-      const res=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(to),{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({
-          _subject:subject,
-          _template:'box',
-          _captcha:'false',
-          name:'Pro X Panel',
-          message:message,
-          from_name:'Pro X Panel'
-        })
-      });
-      const data=await res.json().catch(()=>({}));
-      if(res.ok)return{ok:true,info:data.message||'Sent via FormSubmit',firstTime:!!(data.message&&/confirm|activat/i.test(data.message))};
-      return{ok:false,error:data.message||('HTTP '+res.status)};
-    }catch(err){return{ok:false,error:err.message||'network error'};}
-  }
-
-  function openMailApp(to,subject,message){
-    const a=document.createElement('a');
-    a.href='mailto:'+encodeURIComponent(to)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message);
-    document.body.appendChild(a);a.click();a.remove();
-  }
-
-  function setMsg(id,text,kind){const el=document.getElementById(id);el.textContent=text||'';el.className='prox-set-msg'+(kind?' '+kind:'');}
-
-  function renderSettings(){
-    document.getElementById('prox-cfg-bypass').value=localStorage.getItem(PROX_CONFIG_KEY)||'';
-    const m=loadMail();
-    document.getElementById('prox-mail-service').value=m.serviceId;
-    document.getElementById('prox-mail-template').value=m.templateId;
-    document.getElementById('prox-mail-key').value=m.publicKey;
-    renderAdmins();
-  }
-
-  document.getElementById('prox-cfg-save').addEventListener('click',()=>{try{localStorage.setItem(PROX_CONFIG_KEY,document.getElementById('prox-cfg-bypass').value);setMsg('prox-cfg-msg','Configuration saved.','ok');}catch(e){setMsg('prox-cfg-msg','Could not save.','err');}});
-  document.getElementById('prox-cfg-reload').addEventListener('click',()=>{document.getElementById('prox-cfg-bypass').value=localStorage.getItem(PROX_CONFIG_KEY)||'';setMsg('prox-cfg-msg','Reloaded saved configuration.','ok');});
-
-  document.getElementById('prox-mail-save').addEventListener('click',()=>{
-    const m={serviceId:document.getElementById('prox-mail-service').value.trim(),templateId:document.getElementById('prox-mail-template').value.trim(),publicKey:document.getElementById('prox-mail-key').value.trim()};
-    try{localStorage.setItem(PROX_MAIL_KEY,JSON.stringify(m));setMsg('prox-mail-msg',mailConfigured(m)?'✓ EmailJS saved. Will use EmailJS now.':'Cleared. Will use FormSubmit (automatic, no setup).','ok');}catch(e){setMsg('prox-mail-msg','Could not save.','err');}
-  });
-
-  document.getElementById('prox-mail-test').addEventListener('click',async()=>{
-    const to=prompt('Test email kis address pe bhejni hai?','');
-    if(!to)return;
-    setMsg('prox-mail-msg','Test email bheji ja rahi hai…');
-    const subject='Pro X Panel — Test Email';
-    const message='Yeh ek test email hai Pro X Panel se.\n\nAgar tumhe yeh mil gayi, to automatic email system theek kaam kar raha hai.\n\n— Pro X Panel';
-    const m=loadMail();
-    let r;
-    if(mailConfigured(m)){r=await sendViaEmailJS(m,to.trim(),subject,message);}
-    else{r=await sendViaFormSubmit(to.trim(),subject,message);}
-    if(r.ok){setMsg('prox-mail-msg','✓ Test email bhej di '+to+' pe. Inbox + Spam check karo.'+(r.firstTime?' (Pehli baar activation email aa sakti hai).':''),'ok');}
-    else{setMsg('prox-mail-msg','✕ Test fail: '+r.error,'err');}
+  document.getElementById('prox-admin-list').addEventListener('click',e=>{
+    const b=e.target.closest('.prox-admin-remove');if(!b)return;
+    const l=loadAdmins();l.splice(Number(b.dataset.index),1);saveAdmins(l);renderAdmins();
   });
 
   function openSettingsPage(){
     const content=document.querySelector('.content');if(!content)return;
     [...content.children].forEach(child=>{if(child.id!=='prox-settings-page')child.style.display='none';});
     document.getElementById('prox-settings-page').style.display='flex';
-    document.querySelectorAll('.nav-item').forEach(item=>item.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
     document.getElementById('prox-settings-nav').classList.add('active');
-    renderSettings();
+    document.getElementById('prox-cfg-bypass').value=localStorage.getItem(PROX_CONFIG_KEY)||'';
+    renderAdmins();
   }
-  window.openSettingsPage=openSettingsPage;
   document.getElementById('prox-settings-nav').onclick=function(e){e.preventDefault();openSettingsPage();return false;};
 
-  const PROX_ADMINS_KEY='prox_admins_v1';
-  const PROX_SESSION_KEY='prox_admin_session_v1';
-  function loadAdmins(){return proxRead(PROX_ADMINS_KEY,[]);}
-  function saveAdmins(list){try{localStorage.setItem(PROX_ADMINS_KEY,JSON.stringify(list));}catch(e){}}
-  function hasAdminSession(){const email=localStorage.getItem(PROX_SESSION_KEY);return !!email&&loadAdmins().some(a=>a.email===email&&a.status==='admin');}
-
-  function inviteLink(adminOrToken){
-    if(typeof adminOrToken==='string'){return location.href.split('#')[0]+'#accept='+adminOrToken;}
-    const payload=JSON.stringify({e:adminOrToken.email,t:adminOrToken.token,i:adminOrToken.invited||''});
-    return location.href.split('#')[0]+'#accept='+b64urlEncode(payload);
-  }
-
-  function adminMsg(text,kind){const el=document.getElementById('prox-admin-msg');el.textContent=text||'';el.className='prox-set-msg'+(kind?' '+kind:'');}
-
-  function renderAdmins(){
-    const list=loadAdmins();
-    const el=document.getElementById('prox-admin-list');
-    el.innerHTML=list.length?list.map((a,i)=>`<div class="prox-bound-row"><div><div><span style="color:var(--text);">${escapeUserText(a.email)}</span><span class="prox-vis-pill ${a.status==='admin'?'public':'private'}" style="margin-left:8px;">${a.status==='admin'?'ADMIN':'INVITED'}</span></div><div class="prox-admin-meta">Added ${escapeUserText(a.invited||'')}${a.accepted?' · Accepted '+escapeUserText(a.accepted):' · waiting for them to click the link'}</div></div><div style="display:flex;gap:8px;">${a.status==='invited'?`<button type="button" class="btn prox-admin-copy" data-index="${i}" style="padding:5px 10px;font-size:11px;">📋 Copy link</button>`:''}<button type="button" class="btn prox-admin-remove" data-index="${i}" style="padding:5px 10px;font-size:11px;">Remove</button></div></div>`).join(''):'<div class="prox-bound-empty">No admins added yet.</div>';
-  }
-
-  const inviteModal=document.getElementById('prox-invite-modal');
-  function closeInviteModal(){inviteModal.classList.remove('show');document.getElementById('prox-copy-link-msg').textContent='';document.getElementById('prox-copy-full-msg').textContent='';}
-  document.getElementById('prox-invite-modal-close').addEventListener('click',closeInviteModal);
-  inviteModal.addEventListener('click',e=>{if(e.target===inviteModal)closeInviteModal();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&inviteModal.classList.contains('show'))closeInviteModal();});
-
-  function robustCopy(text){
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).catch(()=>{fallbackCopy(text);});return true;}
-    return fallbackCopy(text);
-  }
-  function fallbackCopy(text){
-    const ta=document.createElement('textarea');
-    ta.value=text;ta.style.position='fixed';ta.style.top='-1000px';ta.style.left='-1000px';
-    document.body.appendChild(ta);ta.focus();ta.select();
-    try{document.execCommand('copy');}catch(e){}
-    document.body.removeChild(ta);
-  }
-
-  function showInviteModal(adminObj){
-    const link=inviteLink(adminObj);
-    const subject='Pro X Panel — You have been invited as an admin';
-    const bodyText=`Hello,\n\nPro X Panel has invited you to be an admin.\n\nClick this link to accept and open the panel:\n${link}\n\nIf you were not expecting this, ignore this email.\n\n— Pro X Panel`;
-    document.getElementById('prox-invite-to').value=adminObj.email;
-    document.getElementById('prox-invite-subject').value=subject;
-    document.getElementById('prox-invite-link').value=link;
-    document.getElementById('prox-invite-body').value=bodyText;
-    inviteModal.classList.add('show');
-    setTimeout(()=>{const linkTa=document.getElementById('prox-invite-link');linkTa.focus();linkTa.select();},100);
-  }
-
-  document.getElementById('prox-copy-link').addEventListener('click',()=>{
-    const link=document.getElementById('prox-invite-link').value;
-    robustCopy(link);
-    const ta=document.getElementById('prox-invite-link');ta.focus();ta.select();
-    document.getElementById('prox-copy-link-msg').textContent='✓ Copied!';
-    document.getElementById('prox-copy-link-msg').className='prox-modal-msg ok';
-    setTimeout(()=>{document.getElementById('prox-copy-link-msg').textContent='';},1800);
+  document.getElementById('prox-cfg-save').addEventListener('click',()=>{
+    localStorage.setItem(PROX_CONFIG_KEY,document.getElementById('prox-cfg-bypass').value);
+    document.getElementById('prox-cfg-msg').textContent='Saved.';
+    document.getElementById('prox-cfg-msg').className='prox-set-msg ok';
+  });
+  document.getElementById('prox-cfg-reload').addEventListener('click',()=>{
+    document.getElementById('prox-cfg-bypass').value=localStorage.getItem(PROX_CONFIG_KEY)||'';
   });
 
-  document.getElementById('prox-copy-full').addEventListener('click',()=>{
-    const full='Subject: '+document.getElementById('prox-invite-subject').value+'\n\n'+document.getElementById('prox-invite-body').value;
-    robustCopy(full);
-    const ta=document.getElementById('prox-invite-body');ta.focus();ta.select();
-    document.getElementById('prox-copy-full-msg').textContent='✓ Full email copied!';
-    document.getElementById('prox-copy-full-msg').className='prox-modal-msg ok';
-    setTimeout(()=>{document.getElementById('prox-copy-full-msg').textContent='';},1800);
-  });
-
-  document.getElementById('prox-open-gmail').addEventListener('click',()=>{
-    const to=document.getElementById('prox-invite-to').value;
-    const subject=document.getElementById('prox-invite-subject').value;
-    const body=document.getElementById('prox-invite-body').value;
-    const url='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(to)+'&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-    window.open(url,'_blank');
-  });
-
-  // ========== DELIVERY: try EmailJS → FormSubmit → Manual modal ==========
-  async function deliverMail(to,subject,message){
-    const m=loadMail();
-    if(mailConfigured(m)){
-      const r=await sendViaEmailJS(m,to,subject,message);
-      if(r.ok)return{ok:true,via:'emailjs'};
-      // EmailJS fail → FormSubmit try karo
-      const r2=await sendViaFormSubmit(to,subject,message);
-      if(r2.ok)return{ok:true,via:'formsubmit',firstTime:r2.firstTime};
-      return{ok:false,via:'emailjs',error:r.error,error2:r2.error};
-    }
-    // EmailJS nahi hai → FormSubmit (automatic, no signup)
-    const r=await sendViaFormSubmit(to,subject,message);
-    return{ok:r.ok,via:'formsubmit',error:r.error,firstTime:r.firstTime};
-  }
-
-  async function inviteAdmin(){
+  document.getElementById('prox-admin-invite').addEventListener('click',()=>{
     const input=document.getElementById('prox-admin-invite-email');
     const email=input.value.trim().toLowerCase();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){adminMsg('Enter a valid email.','err');input.focus();return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){adminMsg('Invalid email','err');return;}
     const list=loadAdmins();
-    if(list.some(a=>a.email===email)){adminMsg('This email is already invited / an admin.','err');return;}
-
-    const token=Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b=>b.toString(16).padStart(2,'0')).join('');
-    const newAdmin={email,token,status:'invited',invited:new Date().toLocaleString()};
-    list.push(newAdmin);
-    saveAdmins(list);
-    input.value='';
-    renderAdmins();
-
-    const subject='Pro X Panel — You have been invited as an admin';
-    const message='Hello,\n\nPro X Panel has invited you to be an admin.\n\nClick this link to accept and open the panel:\n'+inviteLink(newAdmin)+'\n\nIf you were not expecting this, ignore this email.\n\n— Pro X Panel';
-
-    adminMsg('Email bheji ja rahi hai…');
-    const r=await deliverMail(email,subject,message);
-
-    if(r.ok&&r.via==='emailjs'){adminMsg('✓ Email bhej di '+email+' pe (EmailJS). Woh link click karke admin ban jayega.','ok');}
-    else if(r.ok&&r.via==='formsubmit'){
-      if(r.firstTime){adminMsg('✓ Email chali gayi! ⚠️ Pehli baar recipient ko ek ACTIVATION email aayegi (FormSubmit ki taraf se). Woh "Activate" click karega, phir asli invite email aayegi. Spam folder check karne ko bolna.','ok');}
-      else{adminMsg('✓ Email bhej di '+email+' pe. Woh link click karke admin ban jayega. (Spam folder check karne ko bolna)','ok');}
-    }
-    else{
-      adminMsg('✕ Automatic email fail: '+(r.error||'unknown')+' — neeche modal se manually bhej do.','err');
-      showInviteModal(newAdmin);
-    }
-  }
-
-  document.getElementById('prox-admin-invite').addEventListener('click',inviteAdmin);
-  document.getElementById('prox-admin-invite-email').addEventListener('keydown',e=>{if(e.key==='Enter')inviteAdmin();});
-
-  document.getElementById('prox-admin-list').addEventListener('click',async e=>{
-    const list=loadAdmins();
-    const copy=e.target.closest('.prox-admin-copy');
-    const rem=e.target.closest('.prox-admin-remove');
-    if(copy){const a=list[Number(copy.dataset.index)];if(!a)return;showInviteModal(a);}
-    else if(rem){const a=list[Number(rem.dataset.index)];if(!a)return;list.splice(Number(rem.dataset.index),1);saveAdmins(list);if(localStorage.getItem(PROX_SESSION_KEY)===a.email)localStorage.removeItem(PROX_SESSION_KEY);renderAdmins();adminMsg('Removed '+a.email+'.','ok');}
+    if(list.some(a=>a.email===email)){adminMsg('Already added','err');return;}
+    list.push({email,status:'invited',invited:new Date().toLocaleString()});
+    saveAdmins(list);input.value='';renderAdmins();
+    adminMsg('Added.','ok');
   });
 
-  window.addEventListener('storage',()=>{const sp=document.getElementById('prox-settings-page');if(sp&&sp.style.display==='flex')renderAdmins();});
-
-  function openAcceptView(){
-    const raw=decodeURIComponent(location.hash.slice('#accept='.length));
-    const body=document.getElementById('prox-accept-body');
-    const list=loadAdmins();
-    let inv=list.find(a=>a.token===raw);
-    let fromLink=false;
-    if(!inv){const decoded=b64urlDecode(raw);if(decoded){try{const p=JSON.parse(decoded);if(p&&p.t&&p.e){inv={email:p.e,token:p.t,status:'invited',invited:p.i||''};fromLink=true;}}catch(e){}}}
-    const box=document.getElementById('prox-accept');
-    if(!inv){body.innerHTML=`<div class="prox-bind-title">INVITE NOT VALID</div><div class="prox-pub-note">This invite link is invalid or was removed.</div>`;}
-    else if(inv.status==='admin'&&!fromLink){body.innerHTML=`<div class="prox-bind-title">ALREADY ADMIN</div><div class="prox-pub-note">${escapeUserText(inv.email)} already has admin access.</div><button type="button" id="prox-accept-go" class="btn primary" style="margin-top:16px;">Open panel</button>`;}
-    else{body.innerHTML=`<div class="prox-bind-title">ADMIN INVITATION</div><div class="prox-pub-note">You have been invited as an admin of Pro X Panel.</div><div class="prox-pub-detail" style="text-align:left;"><div class="name">${escapeUserText(inv.email)}</div></div><button type="button" id="prox-accept-btn" class="btn primary" style="margin-top:18px;">✅ Approve &amp; become admin</button>`;}
-    box.classList.add('show');
-    const accept=document.getElementById('prox-accept-btn');
-    if(accept)accept.addEventListener('click',()=>{
-      const fresh=loadAdmins();
-      let a=fresh.find(x=>x.token===inv.token);
-      if(!a){a={email:inv.email,token:inv.token,status:'invited',invited:inv.invited||new Date().toLocaleString()};fresh.push(a);}
-      a.status='admin';a.accepted=new Date().toLocaleString();
-      saveAdmins(fresh);
-      try{localStorage.setItem(PROX_SESSION_KEY,a.email);}catch(e){}
-      enterAsAdmin(a.email);
-    });
-    const go=document.getElementById('prox-accept-go');
-    if(go)go.addEventListener('click',()=>{try{localStorage.setItem(PROX_SESSION_KEY,inv.email);}catch(e){}enterAsAdmin(inv.email);});
-  }
-
-  function enterAsAdmin(email){document.getElementById('prox-accept').classList.remove('show');history.replaceState(null,'',location.href.split('#')[0]);unlockDashboard();setAvatarFromEmail(email);}
-
-  function restoreAdminSession(){
-    if(!hasAdminSession())return;
-    dashboardUnlocked=true;
-    const otherPages=['prox-users-page','prox-console-page','prox-bindings-page','prox-settings-page'];
-    const onOverview=otherPages.every(id=>{const d=document.getElementById(id).style.display;return !d||d==='none';});
-    if(onOverview)unlockDashboard();
-    setAvatarFromEmail(localStorage.getItem(PROX_SESSION_KEY));
-  }
-
-  if(location.hash==='#users')openUsersPage();
-  if(location.hash==='#console')openConsolePage();
-  if(location.hash==='#bindings')openBindingsPage();
-  if(location.hash==='#public')openPublicView(false);
-  if(location.hash==='#settings')openSettingsPage();
-  if(location.hash.indexOf('#accept=')===0)openAcceptView();
-
-  renderRows();renderManagedUsers();
-
-  function unlockDashboard(){dashboardUnlocked=true;document.getElementById('locked-panel').style.display='none';document.getElementById('stat-grid').style.display='grid';}
-  renderRows();
-
+  /* DATE */
   const fromInput=document.getElementById('date-from');
   const toInput=document.getElementById('date-to');
   const dateRangeSub=document.getElementById('date-range-sub');
   function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-  function updateSummary(){dateRangeSub.textContent=`${fromInput.value} → ${toInput.value} · Users: ${managedUsers.length}`;}
-  function setRange(fromDate,toDate){fromInput.value=fmt(fromDate);toInput.value=fmt(toDate);updateSummary();}
-  function todayDate(){return new Date();}
-  setRange(todayDate(),todayDate());
+  function updateSummary(){if(dateRangeSub)dateRangeSub.textContent=`${fromInput.value} → ${toInput.value} · Users: ${managedUsers.length}`;}
+  function setRange(a,b){fromInput.value=fmt(a);toInput.value=fmt(b);updateSummary();}
+  function today(){return new Date();}
+  setRange(today(),today());
 
-  document.getElementById('btn-today').addEventListener('click',()=>{setRange(todayDate(),todayDate());});
-  document.getElementById('btn-last7').addEventListener('click',()=>{const end=todayDate();const start=todayDate();start.setDate(start.getDate()-6);setRange(start,end);});
-  document.getElementById('btn-month').addEventListener('click',()=>{const end=todayDate();const start=new Date(end.getFullYear(),end.getMonth(),1);setRange(start,end);});
-  document.getElementById('btn-custom').addEventListener('click',()=>{openCalendar(fromInput,fromField);});
-  fromInput.addEventListener('change',updateSummary);
-  toInput.addEventListener('change',updateSummary);
+  document.getElementById('btn-today').addEventListener('click',()=>setRange(today(),today()));
+  document.getElementById('btn-last7').addEventListener('click',()=>{const e=today();const s=today();s.setDate(s.getDate()-6);setRange(s,e);});
+  document.getElementById('btn-month').addEventListener('click',()=>{const e=today();const s=new Date(e.getFullYear(),e.getMonth(),1);setRange(s,e);});
 
-  const calendarPopup=document.getElementById('calendar-popup');
-  const fromField=document.getElementById('from-field');
-  const toField=document.getElementById('to-field');
-  const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const DOW=['Su','Mo','Tu','We','Th','Fr','Sa'];
-  let calActiveInput=null;let calViewYear,calViewMonth;
-
-  function parseISO(str){if(!str)return todayDate();const [y,m,d]=str.split('-').map(Number);return new Date(y,m-1,d);}
-
-  function renderCalendar(){
-    const selected=parseISO(calActiveInput.value);
-    const today=todayDate();
-    const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
-    const daysInMonth=new Date(calViewYear,calViewMonth+1,0).getDate();
-    const daysInPrevMonth=new Date(calViewYear,calViewMonth,0).getDate();
-    let cells='';
-    for(let i=firstDay-1;i>=0;i--){cells+=`<button type="button" class="cal-day other-month" disabled>${daysInPrevMonth-i}</button>`;}
-    for(let d=1;d<=daysInMonth;d++){
-      const isToday=d===today.getDate()&&calViewMonth===today.getMonth()&&calViewYear===today.getFullYear();
-      const isSelected=d===selected.getDate()&&calViewMonth===selected.getMonth()&&calViewYear===selected.getFullYear();
-      const cls=['cal-day',isToday?'today':'',isSelected?'selected':''].filter(Boolean).join(' ');
-      cells+=`<button type="button" class="${cls}" data-day="${d}">${d}</button>`;
-    }
-    const remaining=(7-(firstDay+daysInMonth)%7)%7;
-    for(let d=1;d<=remaining;d++){cells+=`<button type="button" class="cal-day other-month" disabled>${d}</button>`;}
-    calendarPopup.innerHTML=`<div class="cal-header"><div class="cal-title">${MONTH_NAMES[calViewMonth]} ${calViewYear}</div><div class="cal-nav"><button type="button" id="cal-prev">↑</button><button type="button" id="cal-next">↓</button></div></div><div class="cal-grid">${DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('')}${cells}</div><div class="cal-footer"><button type="button" id="cal-clear">Clear</button><button type="button" id="cal-today">Today</button></div>`;
-    calendarPopup.querySelectorAll('.cal-day[data-day]').forEach(btn=>{btn.addEventListener('click',()=>{const picked=new Date(calViewYear,calViewMonth,parseInt(btn.dataset.day,10));calActiveInput.value=fmt(picked);updateSummary();closeCalendar();});});
-    document.getElementById('cal-prev').addEventListener('click',()=>{calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}renderCalendar();});
-    document.getElementById('cal-next').addEventListener('click',()=>{calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}renderCalendar();});
-    document.getElementById('cal-clear').addEventListener('click',()=>{calActiveInput.value='';updateSummary();closeCalendar();});
-    document.getElementById('cal-today').addEventListener('click',()=>{calActiveInput.value=fmt(todayDate());updateSummary();closeCalendar();});
-  }
-
-  function openCalendar(input,field){
-    calActiveInput=input;
-    const base=parseISO(input.value);
-    calViewYear=base.getFullYear();calViewMonth=base.getMonth();
-    fromField.classList.remove('open');toField.classList.remove('open');
-    field.classList.add('open');field.appendChild(calendarPopup);
-    calendarPopup.classList.add('show');renderCalendar();
-  }
-  function closeCalendar(){calendarPopup.classList.remove('show');fromField.classList.remove('open');toField.classList.remove('open');calActiveInput=null;}
-  fromField.addEventListener('click',()=>openCalendar(fromInput,fromField));
-  toField.addEventListener('click',()=>openCalendar(toInput,toField));
-  document.addEventListener('click',e=>{if(calActiveInput&&!calendarPopup.contains(e.target)&&!fromField.contains(e.target)&&!toField.contains(e.target)){closeCalendar();}});
-
-  function md5(str){
-    function rl(n,c){return (n<<c)|(n>>>(32-c));}
-    function ad(a,b){const lsw=(a&0xffff)+(b&0xffff),msw=(a>>16)+(b>>16)+(lsw>>16);return (msw<<16)|(lsw&0xffff);}
-    function cmn(q,a,b,x,s,t){return ad(rl(ad(ad(a,q),ad(x,t)),s),b);}
-    function ff(a,b,c,d,x,s,t){return cmn((b&c)|(~b&d),a,b,x,s,t);}
-    function gg(a,b,c,d,x,s,t){return cmn((b&d)|(c&~d),a,b,x,s,t);}
-    function hh(a,b,c,d,x,s,t){return cmn(b^c^d,a,b,x,s,t);}
-    function ii(a,b,c,d,x,s,t){return cmn(c^(b|~d),a,b,x,s,t);}
-    function toWords(str){const words=[];const len=str.length*8;for(let i=0;i<len;i+=8)words[i>>5]|=(str.charCodeAt(i/8)&0xff)<<(i%32);return {words,len};}
-    function toHex(n){let s='',v;for(let i=0;i<4;i++){v=(n>>(i*8))&0xff;s+=('0'+v.toString(16)).slice(-2);}return s;}
-    str=unescape(encodeURIComponent(str));
-    const {words:x,len}=toWords(str);
-    x[len>>5]|=0x80<<(len%32);x[(((len+64)>>>9)<<4)+14]=len;
-    let a=1732584193,b=-271733879,c=-1732584194,d=271733878;
-    for(let i=0;i<x.length;i+=16){
-      const oa=a,ob=b,oc=c,od=d;
-      a=ff(a,b,c,d,x[i+0]||0,7,-680876936);d=ff(d,a,b,c,x[i+1]||0,12,-389564586);
-      c=ff(c,d,a,b,x[i+2]||0,17,606105819);b=ff(b,c,d,a,x[i+3]||0,22,-1044525330);
-      a=ff(a,b,c,d,x[i+4]||0,7,-176418897);d=ff(d,a,b,c,x[i+5]||0,12,1200080426);
-      c=ff(c,d,a,b,x[i+6]||0,17,-1473231341);b=ff(b,c,d,a,x[i+7]||0,22,-45705983);
-      a=ff(a,b,c,d,x[i+8]||0,7,1770035416);d=ff(d,a,b,c,x[i+9]||0,12,-1958414417);
-      c=ff(c,d,a,b,x[i+10]||0,17,-42063);b=ff(b,c,d,a,x[i+11]||0,22,-1990404162);
-      a=ff(a,b,c,d,x[i+12]||0,7,1804603682);d=ff(d,a,b,c,x[i+13]||0,12,-40341101);
-      c=ff(c,d,a,b,x[i+14]||0,17,-1502002290);b=ff(b,c,d,a,x[i+15]||0,22,1236535329);
-      a=gg(a,b,c,d,x[i+1]||0,5,-165796510);d=gg(d,a,b,c,x[i+6]||0,9,-1069501632);
-      c=gg(c,d,a,b,x[i+11]||0,14,643717713);b=gg(b,c,d,a,x[i+0]||0,20,-373897302);
-      a=gg(a,b,c,d,x[i+5]||0,5,-701558691);d=gg(d,a,b,c,x[i+10]||0,9,38016083);
-      c=gg(c,d,a,b,x[i+15]||0,14,-660478335);b=gg(b,c,d,a,x[i+4]||0,20,-405537848);
-      a=gg(a,b,c,d,x[i+9]||0,5,568446438);d=gg(d,a,b,c,x[i+14]||0,9,-1019803690);
-      c=gg(c,d,a,b,x[i+3]||0,14,-187363961);b=gg(b,c,d,a,x[i+8]||0,20,1163531501);
-      a=gg(a,b,c,d,x[i+13]||0,5,-1444681467);d=gg(d,a,b,c,x[i+2]||0,9,-51403784);
-      c=gg(c,d,a,b,x[i+7]||0,14,1735328473);b=gg(b,c,d,a,x[i+12]||0,20,-1926607734);
-      a=hh(a,b,c,d,x[i+5]||0,4,-378558);d=hh(d,a,b,c,x[i+8]||0,11,-2022574463);
-      c=hh(c,d,a,b,x[i+11]||0,16,1839030562);b=hh(b,c,d,a,x[i+14]||0,23,-35309556);
-      a=hh(a,b,c,d,x[i+1]||0,4,-1530992060);d=hh(d,a,b,c,x[i+4]||0,11,1272893353);
-      c=hh(c,d,a,b,x[i+7]||0,16,-155497632);b=hh(b,c,d,a,x[i+10]||0,23,-1094730640);
-      a=hh(a,b,c,d,x[i+13]||0,4,681279174);d=hh(d,a,b,c,x[i+0]||0,11,-358537222);
-      c=hh(c,d,a,b,x[i+3]||0,16,-722521979);b=hh(b,c,d,a,x[i+6]||0,23,76029189);
-      a=hh(a,b,c,d,x[i+9]||0,4,-640364487);d=hh(d,a,b,c,x[i+12]||0,11,-421815835);
-      c=hh(c,d,a,b,x[i+15]||0,16,530742520);b=hh(b,c,d,a,x[i+2]||0,23,-995338651);
-      a=ii(a,b,c,d,x[i+0]||0,6,-198630844);d=ii(d,a,b,c,x[i+7]||0,10,1126891415);
-      c=ii(c,d,a,b,x[i+14]||0,15,-1416354905);b=ii(b,c,d,a,x[i+5]||0,21,-57434055);
-      a=ii(a,b,c,d,x[i+12]||0,6,1700485571);d=ii(d,a,b,c,x[i+3]||0,10,-1894986606);
-      c=ii(c,d,a,b,x[i+10]||0,15,-1051523);b=ii(b,c,d,a,x[i+1]||0,21,-2054922799);
-      a=ii(a,b,c,d,x[i+8]||0,6,1873313359);d=ii(d,a,b,c,x[i+15]||0,10,-30611744);
-      c=ii(c,d,a,b,x[i+6]||0,15,-1560198380);b=ii(b,c,d,a,x[i+13]||0,21,1309151649);
-      a=ii(a,b,c,d,x[i+4]||0,6,-145523070);d=ii(d,a,b,c,x[i+11]||0,10,-1120210379);
-      c=ii(c,d,a,b,x[i+2]||0,15,718787259);b=ii(b,c,d,a,x[i+9]||0,21,-343485551);
-      a=ad(a,oa);b=ad(b,ob);c=ad(c,oc);d=ad(d,od);
-    }
-    return toHex(a)+toHex(b)+toHex(c)+toHex(d);
-  }
-
-  const avatarBtn=document.getElementById('avatar-btn');
-  const adminPopover=document.getElementById('admin-popover');
-  const adminEmailInput=document.getElementById('admin-email-input');
-  const adminEmailSave=document.getElementById('admin-email-save');
-
-  function setAvatarFromEmail(email){
-    const trimmed=email.trim().toLowerCase();
-    const hash=md5(trimmed);
-    avatarBtn.innerHTML=`<img src="https://www.gravatar.com/avatar/${hash}?d=404&s=80" alt="${trimmed}">`;
-    const img=avatarBtn.querySelector('img');
-    img.onerror=()=>{avatarBtn.innerHTML=(trimmed[0]||'A').toUpperCase();};
-    avatarBtn.title=trimmed;
-  }
-
-  avatarBtn.addEventListener('click',e=>{e.stopPropagation();adminPopover.classList.toggle('show');if(adminPopover.classList.contains('show'))adminEmailInput.focus();});
-  adminEmailSave.addEventListener('click',()=>{const email=adminEmailInput.value.trim();if(!email)return;setAvatarFromEmail(email);adminPopover.classList.remove('show');});
-  adminEmailInput.addEventListener('keydown',e=>{if(e.key==='Enter')adminEmailSave.click();});
-  document.addEventListener('click',e=>{if(!adminPopover.contains(e.target)&&e.target!==avatarBtn){adminPopover.classList.remove('show');}});
-
-  const ACCESS_PASSWORD='\\proxpenl';
-  function keyOk(){return hasAdminSession()||accessKeyInput.value.trim()===ACCESS_PASSWORD;}
-  const accessKeyInput=document.getElementById('access-key');
-  function tryUnlock(){if(keyOk()){accessKeyInput.style.borderColor='';unlockDashboard();}else{accessKeyInput.style.borderColor='var(--red)';accessKeyInput.style.animation='none';requestAnimationFrame(()=>{accessKeyInput.style.animation='shake .3s';});}}
-  accessKeyInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&accessKeyInput.value.trim()!==''){tryUnlock();}});
-
-  document.querySelectorAll('#load-data-btn').forEach(b=>{
-    b.addEventListener('click',()=>{
-      const original=b.textContent;
-      if(accessKeyInput.value.trim()===''&&!hasAdminSession()){accessKeyInput.focus();return;}
-      if(!keyOk()){tryUnlock();return;}
-      unlockDashboard();
-      b.textContent=original.includes('Fetch')?'⚡ Fetching…':'⟳ Loading…';
-      setTimeout(()=>{b.textContent=original;},700);
-    });
+  document.getElementById('load-data-btn').addEventListener('click',()=>{
+    const b=document.getElementById('load-data-btn');
+    const o=b.textContent;
+    b.textContent='⟳ Loading…';
+    setTimeout(()=>{
+      b.textContent=o;
+      dashboardUnlocked=true;
+      document.getElementById('locked-panel').style.display='none';
+      document.getElementById('stat-grid').style.display='grid';
+    },600);
   });
 
   const fetchBtn=document.getElementById('fetch-btn');
   const fetchStatus=document.getElementById('fetch-status');
-  const statusDot=document.getElementById('status-dot');
-  const statusText=document.getElementById('status-text');
-  let fetchStatusTimer=null;
-  function showFetchStatus(kind,label){clearTimeout(fetchStatusTimer);fetchStatus.textContent=(kind==='success'?'✓ ':'✕ ')+label;fetchStatus.className='fetch-status show '+kind;fetchStatusTimer=setTimeout(()=>{fetchStatus.classList.remove('show');},2500);}
+  let fetchTimer=null;
+  function showFetch(k,l){clearTimeout(fetchTimer);fetchStatus.textContent=(k==='success'?'✓ ':'✕ ')+l;fetchStatus.className='fetch-status show '+k;fetchTimer=setTimeout(()=>fetchStatus.classList.remove('show'),2500);}
   fetchBtn.addEventListener('click',()=>{
-    const original=fetchBtn.textContent;
-    if(!keyOk()){
-      tryUnlock();showFetchStatus('error','Error — fetch failed');
-      statusDot.className='status-dot';statusDot.style.background='var(--red)';statusDot.style.boxShadow='0 0 8px var(--red)';
-      statusText.textContent='Error';statusText.style.color='var(--red)';
-      return;
-    }
-    fetchBtn.textContent='⚡ Fetching…';statusDot.className='status-dot loading';statusDot.style.background='';statusDot.style.boxShadow='';
-    statusText.textContent='Loading stats…';statusText.style.color='var(--amber)';
+    fetchBtn.textContent='⚡ Fetching…';
     setTimeout(()=>{
-      unlockDashboard();fetchBtn.textContent=original;showFetchStatus('success','Complete');
-      statusDot.className='status-dot';statusText.textContent='Ready';statusText.style.color='var(--green)';
+      fetchBtn.textContent='⚡ Fetch';
+      showFetch('success','Complete');
+      dashboardUnlocked=true;
+      document.getElementById('locked-panel').style.display='none';
+      document.getElementById('stat-grid').style.display='grid';
     },600);
   });
-  restoreAdminSession();
+
+  const avatarBtn=document.getElementById('avatar-btn');
+  const adminPopover=document.getElementById('admin-popover');
+  const adminEmailInput=document.getElementById('admin-email-input');
+  function setAvatar(email){const t=email.trim().toLowerCase();avatarBtn.innerHTML=t[0].toUpperCase();avatarBtn.title=t;}
+  avatarBtn.addEventListener('click',e=>{e.stopPropagation();adminPopover.classList.toggle('show');if(adminPopover.classList.contains('show'))adminEmailInput.focus();});
+  document.getElementById('admin-email-save').addEventListener('click',()=>{const e=adminEmailInput.value.trim();if(!e)return;setAvatar(e);adminPopover.classList.remove('show');});
+  document.addEventListener('click',e=>{if(!adminPopover.contains(e.target)&&e.target!==avatarBtn)adminPopover.classList.remove('show');});
+
+  /* INIT */
+  renderRows();
+  renderManagedUsers();
+  // ⚠️ NO AUTO-UNLOCK — password har baar maangega
 </script>
 </body>
 </html>
